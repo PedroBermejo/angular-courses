@@ -2,21 +2,18 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
 import { AppComponent } from './app.component';
-import { HeaderComponent } from './header/header.component';
-import { FooterComponent } from './footer/footer.component';
-import { FakeLogoComponent } from './fake-logo/fake-logo.component';
-import { CoursesPageComponent } from './courses-page/courses-page.component';
+import {CoreModule} from './core/core.module';
+import {TodoListModule} from './todo-list/todo-list.module';
+
 
 @NgModule({
   declarations: [
-    AppComponent,
-    HeaderComponent,
-    FooterComponent,
-    FakeLogoComponent,
-    CoursesPageComponent
+    AppComponent
   ],
   imports: [
-    BrowserModule
+    BrowserModule,
+    CoreModule,
+    TodoListModule
   ],
   providers: [],
   bootstrap: [AppComponent]
