@@ -3,7 +3,7 @@ import { NgModule } from '@angular/core';
 
 import { AppComponent } from './app.component';
 import {CoreModule} from './core/core.module';
-import {TodoListModule} from './todo-list/todo-list.module';
+import {CoursesModule} from './courses/courses.module';
 
 
 @NgModule({
@@ -13,7 +13,7 @@ import {TodoListModule} from './todo-list/todo-list.module';
   imports: [
     BrowserModule,
     CoreModule,
-    TodoListModule
+    CoursesModule
   ],
   providers: [],
   bootstrap: [AppComponent]

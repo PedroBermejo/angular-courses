@@ -1,4 +1,13 @@
 <app-header></app-header>
-<div class="container">
-  <app-todo-list></app-todo-list>
+<app-breadcrumbs></app-breadcrumbs>
+<div class="course-container">
+  <app-search></app-search>
+  <app-add></app-add>
+  <div class="course-items-container">
+    <li *ngFor="let item of courses">
+      <app-course-item  [courseItem]="item"></app-course-item>
+    </li>
+  </div>
+
 </div>
+<app-footer></app-footer>
