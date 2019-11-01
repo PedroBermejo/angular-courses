@@ -1,3 +1,8 @@
-.user-login, .log-off {
+.log-in {
+  text-align: right;
   color: white;
+}
+
+.log-text {
+  padding: 5px;
 }

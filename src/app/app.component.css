@@ -1,8 +1,9 @@
 .course-container {
   background-color: #f2f3f7;
-  padding: 20px 60px;
+  padding: 10px 60px 50px 60px;
 }
 
 li {
   list-style-type: none;
+  padding: 10px;
 }

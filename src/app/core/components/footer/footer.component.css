@@ -1,5 +1,13 @@
+.footer {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  align: right;
+  height: 35px;
+}
 
 .copy-right {
-  font-size: 14px;
+  font-size: 10px;
   color: #c0c3ce;
+  align: right;
 }

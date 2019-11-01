@@ -1,8 +1,8 @@
-.search-text {
-  padding: 20px 0 20px 60px;
-}
+
 .inner-text {
   padding: 12px 20px;
+  border: 1px solid #e0e0e0;
+  border-radius: 5px;
 }
 
 .btn-success {
