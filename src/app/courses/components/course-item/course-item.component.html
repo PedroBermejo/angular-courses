@@ -1,9 +1,17 @@
-<div class="item-container">
-  <div class="header">
-    <h3>{{courseItem.title}}</h3>
-    <span>{{courseItem.duration}}</span>
-    <span>{{courseItem.creationDate}}</span>
+<div class="container item-container">
+  <div class="row">
+    <div class="col-md-9">
+      <div class="header">
+        <h3>{{courseItem.title}}</h3>
+        <span>{{courseItem.duration}}</span>
+        <span>{{courseItem.creationDate}}</span>
+      </div>
+      <p>{{courseItem.description}}</p>
+    </div>
+    <div class="col-md-3">
+      <button type="button" class="btn btn-primary">Edit</button>
+      <button type="button" (click)="remove()" class="btn btn-primary">Remove</button>
+    </div>
   </div>
-  <p>{{courseItem.description}}</p>
 </div>
 

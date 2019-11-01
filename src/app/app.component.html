@@ -5,7 +5,7 @@
   <app-add></app-add>
   <div class="course-items-container">
     <li *ngFor="let item of courses">
-      <app-course-item  [courseItem]="item"></app-course-item>
+      <app-course-item  [courseItem]="item" (deleteCourseItem)="change($event)"></app-course-item>
     </li>
   </div>
 

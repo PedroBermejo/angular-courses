@@ -18,4 +18,8 @@ export class AppComponent implements OnInit {
     console.log(this.courses);
     console.log(typeof(this.courses));
   }
+
+  change(event) {
+    console.log(event.id);
+  }
 }
