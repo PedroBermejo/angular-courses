@@ -1,6 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { SearchComponent } from './search.component';
+import {FormsModule} from '@angular/forms';
 
 describe('SearchComponent', () => {
   let component: SearchComponent;
@@ -8,9 +8,9 @@ describe('SearchComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ SearchComponent ]
-    })
-    .compileComponents();
+      declarations: [ SearchComponent ],
+      imports: [ FormsModule ],
+    }).compileComponents();
   }));
 
   beforeEach(() => {
@@ -22,4 +22,15 @@ describe('SearchComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  it('should call search', async(() => {
+    spyOn(component, 'search');
+    const button = fixture.debugElement.nativeElement.querySelector('button');
+    button.click();
+
+    fixture.whenStable().then(() => {
+      expect(component.search).toHaveBeenCalled();
+    });
+  }));
+
 });

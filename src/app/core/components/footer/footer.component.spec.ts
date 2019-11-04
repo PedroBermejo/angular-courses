@@ -1,5 +1,4 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { FooterComponent } from './footer.component';
 
 describe('FooterComponent', () => {
@@ -22,4 +21,10 @@ describe('FooterComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  it('should contain text', async(() => {
+    const spanList = fixture.debugElement.nativeElement.querySelector('.copy-right');
+
+    expect(spanList.textContent).toContain('Copyright © Videocourse. All rights reserved');
+  }));
 });

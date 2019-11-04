@@ -5,8 +5,6 @@ import { AddComponent } from './components/add/add.component';
 import { CourseItemComponent } from './components/course-item/course-item.component';
 import {FormsModule} from '@angular/forms';
 
-
-
 @NgModule({
   declarations: [SearchComponent, AddComponent, CourseItemComponent],
   imports: [
