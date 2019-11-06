@@ -1,9 +1,10 @@
-import {TestBed, async, ComponentFixture} from '@angular/core/testing';
+import { TestBed, async, ComponentFixture } from '@angular/core/testing';
 import { AppComponent } from './app.component';
-import {CoursesServiceService} from './services/courses-service.service';
+import { CoursesServiceService } from './services/courses-service.service';
 import data from '../assets/courses-list.json';
-import {Course} from './interfaces/course';
-import {NO_ERRORS_SCHEMA} from '@angular/core';
+import { Course } from './interfaces/course';
+import { CoursesModule } from './courses/courses.module';
+import { CoreModule } from './core/core.module';
 
 describe('AppComponent', () => {
 
@@ -14,10 +15,12 @@ describe('AppComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [AppComponent],
-      providers: [CoursesServiceService],
-      schemas: [NO_ERRORS_SCHEMA],
-      imports: []
+      declarations: [ AppComponent ],
+      providers: [ CoursesServiceService ],
+      imports: [
+        CoursesModule,
+        CoreModule
+      ]
     }).compileComponents();
 
     fixture = TestBed.createComponent(AppComponent);
