@@ -15,8 +15,6 @@ export class AppComponent implements OnInit {
 
   ngOnInit() {
     this.courses = this.coursesServiceService.getCourses();
-    console.log(this.courses);
-    console.log(typeof(this.courses));
   }
 
   change(event) {

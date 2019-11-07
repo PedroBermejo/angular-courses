@@ -1,31 +1,43 @@
-import { TestBed, async } from '@angular/core/testing';
+import { TestBed, async, ComponentFixture } from '@angular/core/testing';
 import { AppComponent } from './app.component';
+import { CoursesServiceService } from './services/courses-service.service';
+import data from '../assets/courses-list.json';
+import { Course } from './interfaces/course';
+import { CoursesModule } from './courses/courses.module';
+import { CoreModule } from './core/core.module';
 
 describe('AppComponent', () => {
+
+  let appComponent: AppComponent;
+  let fixture: ComponentFixture<AppComponent>;
+  let service: CoursesServiceService;
+  const courseList: Course[] = <any> data;
+
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [
-        AppComponent
-      ],
+      declarations: [ AppComponent ],
+      providers: [ CoursesServiceService ],
+      imports: [
+        CoursesModule,
+        CoreModule
+      ]
     }).compileComponents();
+
+    fixture = TestBed.createComponent(AppComponent);
+    appComponent =  fixture.componentInstance;
+    service = TestBed.get(CoursesServiceService);
   }));
 
   it('should create the app', () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    const app = fixture.debugElement.componentInstance;
-    expect(app).toBeTruthy();
+    expect(appComponent).toBeTruthy();
   });
 
-  it(`should have as title 'my-test-app'`, () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    const app = fixture.debugElement.componentInstance;
-    expect(app.title).toEqual('my-test-app');
+  it('should populate courses', () => {
+    spyOn(service, 'getCourses').and.returnValue(courseList);
+
+    appComponent.ngOnInit();
+    expect(appComponent.courses).toBeTruthy();
+    expect(service.getCourses).toHaveBeenCalled();
   });
 
-  it('should render title', () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    fixture.detectChanges();
-    const compiled = fixture.debugElement.nativeElement;
-    expect(compiled.querySelector('.content span').textContent).toContain('my-test-app app is running!');
-  });
 });
