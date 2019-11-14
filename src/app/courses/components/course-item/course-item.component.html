@@ -1,5 +1,5 @@
 <div class="container item-container"
-     [appCreatedDate]="getDate()"
+     [appCreatedDate]="courseItem.creationDate"
      [ngClass]="{'top-rated': courseItem.topRated}">
 
   <div class="header row">
@@ -8,7 +8,7 @@
     </div>
     <div class="time col-md-4">
       <span class="duration">{{courseItem.duration | timeFormat}}</span>
-      <span class="creation-date">{{getDate() | date}}</span>
+      <span class="creation-date">{{courseItem.creationDate | date}}</span>
     </div>
   </div>
 

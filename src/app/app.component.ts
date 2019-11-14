@@ -19,9 +19,7 @@ export class AppComponent implements OnInit {
   }
 
   delete(event) {
-    console.log(event.id);
-    const index = this.courses.findIndex(item => item.id === event.id );
-    this.courses.splice(index, 1);
+    this.courses = this.courses.filter(({ id }) => id !== event.id);
   }
 
   search(event) {

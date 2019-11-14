@@ -4,7 +4,7 @@
   <app-search (term)="search($event)"></app-search>
   <app-add></app-add>
   <div class="course-items-container">
-    <li *ngFor="let item of courses | sortBy:'creationDate' | filterBy:'title':searchTerm">
+    <li *ngFor="let item of courses | sortBy: 'creationDate' | filterBy:'title':searchTerm">
       <app-course-item  [courseItem]="item" (deleteCourseItem)="delete($event)"></app-course-item>
     </li>
     <li class="no-data" *ngIf="courses.length === 0">

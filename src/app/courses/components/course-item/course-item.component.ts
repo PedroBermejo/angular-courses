@@ -16,10 +16,6 @@ export class CourseItemComponent implements OnInit {
   ngOnInit() {
   }
 
-  getDate() {
-    return new Date(this.courseItem.creationDate);
-  }
-
   remove() {
     this.deleteCourseItem.next(this.courseItem);
   }

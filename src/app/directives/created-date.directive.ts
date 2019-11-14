@@ -4,17 +4,18 @@ import {AfterViewInit, Directive, ElementRef, Input, Renderer2} from '@angular/c
   selector: '[appCreatedDate]'
 })
 export class CreatedDateDirective implements AfterViewInit{
-  @Input('appCreatedDate') createdDate;
+  @Input('appCreatedDate') createdDate: string;
 
   constructor(private el: ElementRef, private renderer: Renderer2) {  }
 
   ngAfterViewInit(): void {
     const now = new Date();
+    const created = new Date(this.createdDate);
 
-    if (this.createdDate.getTime() > now.getTime()) {
+    if (created.getTime() > now.getTime()) {
       this.renderer.setStyle(this.el.nativeElement, 'border-style', 'solid');
       this.renderer.setStyle(this.el.nativeElement, 'border-color', 'blue');
-    } else if ( this.getDiffDays(now, this.createdDate) < 14 ) {
+    } else if ( this.getDiffDays(now, created) < 14 ) {
       this.renderer.setStyle(this.el.nativeElement, 'border-style', 'solid');
       this.renderer.setStyle(this.el.nativeElement, 'border-color', 'green');
     }
