@@ -5,6 +5,15 @@
   border-radius: 10px;
 }
 
+.creation-date, duration{
+  padding-left: 10px;
+  padding-right: 5px;
+}
+
+.top-rated{
+  background-color:  #ffffb3;
+}
+
 .btn-primary {
   margin: 10px;
 }

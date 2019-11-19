@@ -10,6 +10,7 @@ import {Course} from './interfaces/course';
 export class AppComponent implements OnInit {
   title = 'epam-angular-training';
   courses: Course[];
+  searchTerm: string;
 
   constructor(private coursesServiceService: CoursesServiceService) {}
 
@@ -17,7 +18,11 @@ export class AppComponent implements OnInit {
     this.courses = this.coursesServiceService.getCourses();
   }
 
-  change(event) {
-    console.log(event.id);
+  delete(event) {
+    this.courses = this.courses.filter(({ id }) => id !== event.id);
+  }
+
+  search(event) {
+    this.searchTerm = event;
   }
 }

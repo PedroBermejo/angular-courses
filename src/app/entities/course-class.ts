@@ -6,4 +6,5 @@ export class CourseClass implements Course {
   duration: number;
   id: number;
   title: string;
+  topRated: boolean;
 }

@@ -1,9 +1,9 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-
 import { AppComponent } from './app.component';
 import {CoreModule} from './core/core.module';
 import {CoursesModule} from './courses/courses.module';
+import {PipesModule} from './pipes/pipes.module';
 
 
 @NgModule({
@@ -13,7 +13,8 @@ import {CoursesModule} from './courses/courses.module';
   imports: [
     BrowserModule,
     CoreModule,
-    CoursesModule
+    CoursesModule,
+    PipesModule
   ],
   providers: [],
   bootstrap: [AppComponent]
