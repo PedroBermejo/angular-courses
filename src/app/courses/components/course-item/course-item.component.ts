@@ -16,8 +16,11 @@ export class CourseItemComponent implements OnInit {
   ngOnInit() {
   }
 
-  remove() {
-    this.deleteCourseItem.next(this.courseItem);
+  openDeleteModal() {
+    const deleteItem = confirm('Do you really want to delete this course? Yes/No');
+    if (deleteItem) {
+      this.deleteCourseItem.next(this.courseItem);
+    }
   }
 
 }

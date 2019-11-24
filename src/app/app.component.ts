@@ -15,11 +15,11 @@ export class AppComponent implements OnInit {
   constructor(private coursesServiceService: CoursesServiceService) {}
 
   ngOnInit() {
-    this.courses = this.coursesServiceService.getCourses();
+    this.courses = this.coursesServiceService.getList();
   }
 
   delete(event) {
-    this.courses = this.courses.filter(({ id }) => id !== event.id);
+    this.coursesServiceService.removeItem(event.id);
   }
 
   search(event) {

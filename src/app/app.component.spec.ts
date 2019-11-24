@@ -33,11 +33,11 @@ describe('AppComponent', () => {
   });
 
   it('should populate courses', () => {
-    spyOn(service, 'getCourses').and.returnValue(courseList);
+    spyOn(service, 'getList').and.returnValue(courseList);
 
     appComponent.ngOnInit();
     expect(appComponent.courses).toBeTruthy();
-    expect(service.getCourses).toHaveBeenCalled();
+    expect(service.getList).toHaveBeenCalled();
   });
 
 });
