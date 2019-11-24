@@ -4,6 +4,7 @@ import { AppComponent } from './app.component';
 import {CoreModule} from './core/core.module';
 import {CoursesModule} from './courses/courses.module';
 import {PipesModule} from './pipes/pipes.module';
+import {LoginModule} from './login/login.module';
 
 
 @NgModule({
@@ -14,7 +15,8 @@ import {PipesModule} from './pipes/pipes.module';
     BrowserModule,
     CoreModule,
     CoursesModule,
-    PipesModule
+    PipesModule,
+    LoginModule
   ],
   providers: [],
   bootstrap: [AppComponent]
