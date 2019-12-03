@@ -18,7 +18,7 @@ describe('CoursesServiceService', () => {
   });
 
   it('should contain values in courses', () => {
-    const actual: Course[] = service.getCourses();
+    const actual: Course[] = service.getList();
 
     expect(actual).toBeTruthy();
     expect(actual.length).toBe(4);

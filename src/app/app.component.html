@@ -1,6 +1,6 @@
 <app-header></app-header>
-<app-breadcrumbs></app-breadcrumbs>
-<div class="course-container">
+<app-breadcrumbs *ngIf="isLoggedIn()"></app-breadcrumbs>
+<div class="course-container" *ngIf="isLoggedIn()">
   <app-search (term)="search($event)"></app-search>
   <app-add></app-add>
   <div class="course-items-container">
@@ -11,7 +11,6 @@
       NO DATA. FEEL FREE TO ADD NEW COURSE
     </li>
   </div>
-
-
 </div>
+<app-login-page *ngIf="!isLoggedIn()"></app-login-page>
 <app-footer></app-footer>

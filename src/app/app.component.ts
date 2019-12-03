@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {CoursesServiceService} from './services/courses-service.service';
 import {Course} from './interfaces/course';
+import {AuthorizationService} from './services/authorization.service';
 
 @Component({
   selector: 'app-root',
@@ -12,17 +13,24 @@ export class AppComponent implements OnInit {
   courses: Course[];
   searchTerm: string;
 
-  constructor(private coursesServiceService: CoursesServiceService) {}
+  constructor(
+    private coursesServiceService: CoursesServiceService,
+    private authorizationService: AuthorizationService
+  ) {}
 
   ngOnInit() {
-    this.courses = this.coursesServiceService.getCourses();
+    this.courses = this.coursesServiceService.getList();
   }
 
   delete(event) {
-    this.courses = this.courses.filter(({ id }) => id !== event.id);
+    this.coursesServiceService.removeItem(event.id);
   }
 
   search(event) {
     this.searchTerm = event;
+  }
+
+  isLoggedIn() {
+    return this.authorizationService.isAuthenticated();
   }
 }
