@@ -10,7 +10,8 @@ import {Course} from '../../../interfaces/course';
 export class CourseItemComponent implements OnInit {
 
   @Input() courseItem: Course;
-  @Output() public deleteCourseItem = new EventEmitter();
+  @Output() editCourseItem = new EventEmitter();
+  @Output() deleteCourseItem = new EventEmitter();
 
   constructor(private cd: ChangeDetectorRef) { }
 
@@ -22,6 +23,10 @@ export class CourseItemComponent implements OnInit {
     if (deleteItem) {
       this.deleteCourseItem.next(this.courseItem);
     }
+  }
+
+  openEditModal() {
+    this.editCourseItem.next(this.courseItem);
   }
 
 }

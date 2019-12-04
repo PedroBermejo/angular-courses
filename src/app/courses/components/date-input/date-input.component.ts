@@ -8,7 +8,7 @@ import {Course} from '../../../interfaces/course';
 })
 export class DateInputComponent implements OnInit {
   @Output() dateChanged = new EventEmitter();
-  date: string;
+  @Input() date: string;
 
   constructor() { }
 
