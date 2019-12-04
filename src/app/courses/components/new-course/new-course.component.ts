@@ -6,6 +6,8 @@ import {Component, OnInit} from '@angular/core';
   styleUrls: ['./new-course.component.css']
 })
 export class NewCourseComponent implements OnInit {
+  date: string;
+  duration: number;
 
   constructor() { }
 
@@ -13,11 +15,19 @@ export class NewCourseComponent implements OnInit {
   }
 
   addCourse(form) {
-    console.log(form);
     if (form.valid) {
       console.log(form.value);
+      console.log(this.date, this.duration);
     }
 
+  }
+
+  updateDate(event) {
+    this.date = event;
+  }
+
+  updateDuration(event) {
+    this.duration = event;
   }
 
 }

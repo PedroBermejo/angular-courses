@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Course} from '../../../interfaces/course';
 
 @Component({
   selector: 'app-date-input',
@@ -6,10 +7,18 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./date-input.component.css']
 })
 export class DateInputComponent implements OnInit {
+  @Output() dateChanged = new EventEmitter();
+  date: string;
 
   constructor() { }
 
   ngOnInit() {
   }
+
+  inputChanged() {
+    this.dateChanged.next(this.date);
+  }
+
+
 
 }
