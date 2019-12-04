@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 
 @Component({
   selector: 'app-add',
@@ -7,9 +7,15 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AddComponent implements OnInit {
 
+  @Output() addingCourse =  new EventEmitter();
+
   constructor() { }
 
   ngOnInit() {
+  }
+
+  addCourse() {
+    this.addingCourse.next();
   }
 
 }

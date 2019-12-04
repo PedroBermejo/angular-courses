@@ -12,6 +12,7 @@ export class AppComponent implements OnInit {
   title = 'epam-angular-training';
   courses: Course[];
   searchTerm: string;
+  addingCourse = false;
 
   constructor(
     private coursesServiceService: CoursesServiceService,
@@ -32,5 +33,9 @@ export class AppComponent implements OnInit {
 
   isLoggedIn() {
     return this.authorizationService.isAuthenticated();
+  }
+
+  adding(event) {
+    this.addingCourse = true;
   }
 }

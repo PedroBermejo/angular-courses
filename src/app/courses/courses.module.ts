@@ -6,9 +6,19 @@ import { CourseItemComponent } from './components/course-item/course-item.compon
 import {FormsModule} from '@angular/forms';
 import {DirectivesModule} from '../directives/directives.module';
 import {PipesModule} from '../pipes/pipes.module';
+import { NewCourseComponent } from './components/new-course/new-course.component';
+import { DateInputComponent } from './components/date-input/date-input.component';
+import { DurationInputComponent } from './components/duration-input/duration-input.component';
 
 @NgModule({
-  declarations: [SearchComponent, AddComponent, CourseItemComponent],
+  declarations: [
+    SearchComponent,
+    AddComponent,
+    CourseItemComponent,
+    NewCourseComponent,
+    DateInputComponent,
+    DurationInputComponent
+  ],
   imports: [
     CommonModule,
     FormsModule,
@@ -18,7 +28,8 @@ import {PipesModule} from '../pipes/pipes.module';
   exports: [
     AddComponent,
     SearchComponent,
-    CourseItemComponent
+    CourseItemComponent,
+    NewCourseComponent
   ]
 })
 export class CoursesModule { }
