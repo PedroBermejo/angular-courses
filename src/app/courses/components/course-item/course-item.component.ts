@@ -1,4 +1,4 @@
-import {Component, Input, OnInit, Output, EventEmitter, ChangeDetectionStrategy, ChangeDetectorRef} from '@angular/core';
+import {Component, Input, OnInit, Output, EventEmitter, ChangeDetectionStrategy} from '@angular/core';
 import {Course} from '../../../interfaces/course';
 
 @Component({
@@ -13,7 +13,7 @@ export class CourseItemComponent implements OnInit {
   @Output() editCourseItem = new EventEmitter();
   @Output() deleteCourseItem = new EventEmitter();
 
-  constructor(private cd: ChangeDetectorRef) { }
+  constructor() { }
 
   ngOnInit() {
   }
