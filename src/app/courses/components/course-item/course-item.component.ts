@@ -1,15 +1,17 @@
-import {Component, Input, OnInit, Output, EventEmitter} from '@angular/core';
+import {Component, Input, OnInit, Output, EventEmitter, ChangeDetectionStrategy} from '@angular/core';
 import {Course} from '../../../interfaces/course';
 
 @Component({
   selector: 'app-course-item',
   templateUrl: './course-item.component.html',
-  styleUrls: ['./course-item.component.css']
+  styleUrls: ['./course-item.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CourseItemComponent implements OnInit {
 
   @Input() courseItem: Course;
-  @Output() public deleteCourseItem = new EventEmitter();
+  @Output() editCourseItem = new EventEmitter();
+  @Output() deleteCourseItem = new EventEmitter();
 
   constructor() { }
 
@@ -21,6 +23,10 @@ export class CourseItemComponent implements OnInit {
     if (deleteItem) {
       this.deleteCourseItem.next(this.courseItem);
     }
+  }
+
+  openEditModal() {
+    this.editCourseItem.next(this.courseItem);
   }
 
 }

@@ -1,0 +1,15 @@
+<div>
+  <span>Title:</span><br>
+  <input type="text" class="title" [(ngModel)]="title"  placeholder="Enter title">
+  <br>
+  <span>Description:</span><br>
+  <textarea rows="4" cols="50" [(ngModel)]="description" class="description"></textarea>
+  <br>
+  <span>Date:</span><br>
+  <app-date-input [date]="date" (dateChanged)="updateDate($event)"></app-date-input><br>
+  <span>Duration:</span><br>
+  <app-duration-input [duration]="duration" (durationChanged)="updateDuration($event)"></app-duration-input>
+  <span>{{+duration | timeFormat}}</span><br>
+  <button class="submit" (click)="addCourse()">Save</button>
+  <button (click)="cancelAdd()">Cancel</button>
+</div>

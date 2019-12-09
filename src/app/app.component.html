@@ -1,16 +1,17 @@
 <app-header></app-header>
-<app-breadcrumbs *ngIf="isLoggedIn()"></app-breadcrumbs>
-<div class="course-container" *ngIf="isLoggedIn()">
+<app-breadcrumbs *ngIf="isLoggedIn() && (!addingCourse)"></app-breadcrumbs>
+<div class="course-container" *ngIf="isLoggedIn() && (!addingCourse)">
   <app-search (term)="search($event)"></app-search>
-  <app-add></app-add>
+  <app-add (addingCourse)="adding($event)"></app-add>
   <div class="course-items-container">
     <li *ngFor="let item of courses | sortBy: 'creationDate' | filterBy:'title':searchTerm">
-      <app-course-item  [courseItem]="item" (deleteCourseItem)="delete($event)"></app-course-item>
+      <app-course-item  [courseItem]="item" (editCourseItem)="edit($event)" (deleteCourseItem)="delete($event)"></app-course-item>
     </li>
     <li class="no-data" *ngIf="courses.length === 0">
       NO DATA. FEEL FREE TO ADD NEW COURSE
     </li>
   </div>
 </div>
-<app-login-page *ngIf="!isLoggedIn()"></app-login-page>
+<app-login-page *ngIf="(!isLoggedIn()) && (!addingCourse)"></app-login-page>
+<app-new-course [courseItem]="editCourseItem" (completed)="completeAddingCourse($event)" *ngIf="addingCourse"></app-new-course>
 <app-footer></app-footer>
