@@ -1,5 +1,7 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {Course} from '../../../interfaces/course';
+import {CoursesServiceService} from '../../../services/courses-service.service';
+import {ActivatedRoute} from '@angular/router';
 
 @Component({
   selector: 'app-new-course',
@@ -7,24 +9,32 @@ import {Course} from '../../../interfaces/course';
   styleUrls: ['./new-course.component.css']
 })
 export class NewCourseComponent implements OnInit {
+  id: number;
   date: string;
   duration: number;
   title: string;
   description: string;
-  @Output() completed = new EventEmitter();
-  @Input() courseItem: Course;
 
-  constructor() { }
+  constructor(
+    private coursesServiceService: CoursesServiceService,
+    private route: ActivatedRoute
+  ) { }
 
   ngOnInit() {
-    if (this.courseItem) {
-      this.date = this.courseItem.creationDate;
-      this.duration = this.courseItem.duration;
-      this.title = this.courseItem.title;
-      this.description = this.courseItem.description;
-    }
+    this.route.paramMap.subscribe(params => {
+      if (params) {
+        const courseItem: Course = this.coursesServiceService.getItemById(+params.get('id'));
+        if (courseItem) {
+          this.date = courseItem.creationDate;
+          this.duration = courseItem.duration;
+          this.title = courseItem.title;
+          this.description = courseItem.description;
+        }
+      }
+    });
   }
 
+  /*
   addCourse() {
     if (this.title && this.description && this.duration && this.date) {
       let idItem = Math.floor(Math.random() * 1000) + 1;
@@ -57,4 +67,5 @@ export class NewCourseComponent implements OnInit {
     this.duration = event;
   }
 
+*/
 }

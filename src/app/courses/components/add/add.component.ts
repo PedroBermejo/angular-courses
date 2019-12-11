@@ -1,4 +1,5 @@
 import {Component, EventEmitter, OnInit, Output} from '@angular/core';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-add',
@@ -7,15 +8,14 @@ import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 })
 export class AddComponent implements OnInit {
 
-  @Output() addingCourse =  new EventEmitter();
-
-  constructor() { }
+  constructor(private router: Router) { }
 
   ngOnInit() {
   }
 
-  addCourse() {
-    this.addingCourse.next();
+  addNewCourse() {
+    this.router.navigate(['courses', 'new'], {});
   }
+
 
 }

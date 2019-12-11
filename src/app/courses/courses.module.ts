@@ -9,6 +9,8 @@ import {PipesModule} from '../pipes/pipes.module';
 import { NewCourseComponent } from './components/new-course/new-course.component';
 import { DateInputComponent } from './components/date-input/date-input.component';
 import { DurationInputComponent } from './components/duration-input/duration-input.component';
+import { CoursePageComponent } from './components/course-page/course-page.component';
+import {LoginModule} from '../login/login.module';
 
 @NgModule({
   declarations: [
@@ -17,19 +19,22 @@ import { DurationInputComponent } from './components/duration-input/duration-inp
     CourseItemComponent,
     NewCourseComponent,
     DateInputComponent,
-    DurationInputComponent
+    DurationInputComponent,
+    CoursePageComponent
   ],
   imports: [
     CommonModule,
     FormsModule,
     DirectivesModule,
-    PipesModule
+    PipesModule,
+    LoginModule
   ],
   exports: [
     AddComponent,
     SearchComponent,
     CourseItemComponent,
-    NewCourseComponent
+    NewCourseComponent,
+    CoursePageComponent
   ]
 })
 export class CoursesModule { }
