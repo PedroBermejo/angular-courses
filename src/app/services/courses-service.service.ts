@@ -16,17 +16,17 @@ export class CoursesServiceService {
     return this.courses;
   }
 
-  createCourse(course: Course) {
-    this.courses.push(course);
-  }
-
   getItemById(idFind: number): Course {
     return this.courses.find(course => course.id === idFind);
   }
 
   updateItem(courseFind: Course) {
     const index = this.courses.findIndex(course => course.id === courseFind.id);
-    this.courses[index] = courseFind;
+    if ( index > -1) {
+      this.courses[index] = courseFind;
+    } else {
+      this.courses.push(courseFind);
+    }
   }
 
   removeItem(idRemove: number) {

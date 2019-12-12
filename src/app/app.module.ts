@@ -3,7 +3,6 @@ import { NgModule } from '@angular/core';
 import { AppComponent } from './app.component';
 import {CoreModule} from './core/core.module';
 import {CoursesModule} from './courses/courses.module';
-import {PipesModule} from './pipes/pipes.module';
 import {LoginModule} from './login/login.module';
 import {AppRoutingModule} from './app-routing.module';
 
@@ -15,10 +14,9 @@ import {AppRoutingModule} from './app-routing.module';
   imports: [
     BrowserModule,
     CoreModule,
-    CoursesModule,
-    PipesModule,
     LoginModule,
-    AppRoutingModule
+    AppRoutingModule,
+    CoursesModule
   ],
   providers: [],
   bootstrap: [AppComponent]

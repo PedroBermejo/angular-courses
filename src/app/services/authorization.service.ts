@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
 import {UserEntity} from '../interfaces/user-entity';
+import {ActivatedRouteSnapshot, CanActivate, RouterStateSnapshot} from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
 })
-export class AuthorizationService {
+export class AuthorizationService implements  CanActivate {
 
   constructor() { }
 
@@ -16,16 +17,16 @@ export class AuthorizationService {
     window.localStorage.removeItem('authorization');
   }
 
-  isAuthenticated(): boolean {
+  getUserInfo(): UserEntity {
+    return JSON.parse(window.localStorage.getItem('authorization'));
+  }
+
+  canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
     const user: UserEntity = JSON.parse(window.localStorage.getItem('authorization'));
     if (user) {
       return true;
     } else {
       return false;
     }
-  }
-
-  getUserInfo(): UserEntity {
-    return JSON.parse(window.localStorage.getItem('authorization'));
   }
 }

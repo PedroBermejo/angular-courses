@@ -11,6 +11,7 @@ import { DateInputComponent } from './components/date-input/date-input.component
 import { DurationInputComponent } from './components/duration-input/duration-input.component';
 import { CoursePageComponent } from './components/course-page/course-page.component';
 import {LoginModule} from '../login/login.module';
+import {CoreModule} from '../core/core.module';
 
 @NgModule({
   declarations: [
@@ -27,13 +28,10 @@ import {LoginModule} from '../login/login.module';
     FormsModule,
     DirectivesModule,
     PipesModule,
-    LoginModule
+    LoginModule,
+    CoreModule
   ],
   exports: [
-    AddComponent,
-    SearchComponent,
-    CourseItemComponent,
-    NewCourseComponent,
     CoursePageComponent
   ]
 })
