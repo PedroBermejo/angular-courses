@@ -1,3 +1,6 @@
-.place-holder {
-  padding: 20px 0 20px 60px;
+.breadcrumb-container {
+  padding: 20px 60px;
+}
+.course-name {
+  padding-left: 20px;
 }
