@@ -1,23 +1,12 @@
-import {Component, OnInit} from '@angular/core';
-import {CoursesServiceService} from './services/courses-service.service';
-import {Course} from './interfaces/course';
-import {AuthorizationService} from './services/authorization.service';
+import {Component} from '@angular/core';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent implements OnInit {
+export class AppComponent {
   title = 'angular-training';
-
-
-  constructor(
-    private authorizationService: AuthorizationService
-  ) {}
-
-  ngOnInit() {
-  }
 
 
 }

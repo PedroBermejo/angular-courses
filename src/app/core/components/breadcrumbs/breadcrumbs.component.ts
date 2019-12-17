@@ -1,21 +1,13 @@
-import {Component, Input, OnInit} from '@angular/core';
-import {Router} from '@angular/router';
+import {Component, Input} from '@angular/core';
 
 @Component({
   selector: 'app-breadcrumbs',
   templateUrl: './breadcrumbs.component.html',
   styleUrls: ['./breadcrumbs.component.css']
 })
-export class BreadcrumbsComponent implements OnInit {
+export class BreadcrumbsComponent {
   @Input() courseName;
 
-  constructor(private router: Router) { }
-
-  ngOnInit() {
-  }
-
-  goToCourses() {
-    this.router.navigate(['courses']);
-  }
+  constructor() { }
 
 }

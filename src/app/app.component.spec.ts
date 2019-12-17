@@ -1,6 +1,6 @@
 import { TestBed, async, ComponentFixture } from '@angular/core/testing';
 import { AppComponent } from './app.component';
-import { CoursesServiceService } from './services/courses-service.service';
+import { CoursesService } from './services/courses.service';
 import data from '../assets/courses-list.json';
 import { Course } from './interfaces/course';
 import { CoursesModule } from './courses/courses.module';
@@ -10,13 +10,13 @@ describe('AppComponent', () => {
 
   let appComponent: AppComponent;
   let fixture: ComponentFixture<AppComponent>;
-  let service: CoursesServiceService;
+  let service: CoursesService;
   const courseList: Course[] = <any> data;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ AppComponent ],
-      providers: [ CoursesServiceService ],
+      providers: [ CoursesService ],
       imports: [
         CoursesModule,
         CoreModule
@@ -25,7 +25,7 @@ describe('AppComponent', () => {
 
     fixture = TestBed.createComponent(AppComponent);
     appComponent =  fixture.componentInstance;
-    service = TestBed.get(CoursesServiceService);
+    service = TestBed.get(CoursesService);
   }));
 
   it('should create the app', () => {

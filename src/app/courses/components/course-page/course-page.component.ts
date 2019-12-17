@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {CoursesServiceService} from '../../../services/courses-service.service';
+import {CoursesService} from '../../../services/courses.service';
 import {Course} from '../../../interfaces/course';
 
 @Component({
@@ -12,7 +12,7 @@ export class CoursePageComponent implements OnInit {
   courses: Course[];
   searchTerm: string;
 
-  constructor(private coursesServiceService: CoursesServiceService) { }
+  constructor(private coursesServiceService: CoursesService) { }
 
   ngOnInit() {
     this.courses = this.coursesServiceService.getList();

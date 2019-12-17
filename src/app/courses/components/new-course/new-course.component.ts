@@ -1,6 +1,6 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {Course} from '../../../interfaces/course';
-import {CoursesServiceService} from '../../../services/courses-service.service';
+import {CoursesService} from '../../../services/courses.service';
 import {ActivatedRoute, Router} from '@angular/router';
 
 @Component({
@@ -9,7 +9,7 @@ import {ActivatedRoute, Router} from '@angular/router';
   styleUrls: ['./new-course.component.css']
 })
 export class NewCourseComponent implements OnInit {
-  id: number = Math.floor(Math.random() * 1000) + 1;
+  id: number;
   date: string;
   duration: number;
   title: string;
@@ -17,7 +17,7 @@ export class NewCourseComponent implements OnInit {
   topRated = false;
 
   constructor(
-    private coursesServiceService: CoursesServiceService,
+    private coursesServiceService: CoursesService,
     private activeRoute: ActivatedRoute,
     private router: Router
   ) { }
@@ -41,6 +41,11 @@ export class NewCourseComponent implements OnInit {
 
   addCourse() {
     if (this.title && this.description && this.duration && this.date) {
+      console.log(this.id);
+      if (!this.id) {
+        this.id = this.generateId();
+      }
+      console.log(this.id);
       const course: Course = {
         id: this.id,
         title: this.title,
@@ -49,7 +54,7 @@ export class NewCourseComponent implements OnInit {
         description: this.description,
         topRated: this.topRated
       };
-      this.coursesServiceService.updateItem(course);
+      this.coursesServiceService.upsertCourse(course);
     }
     this.router.navigate(['courses'], {});
   }
@@ -66,4 +71,14 @@ export class NewCourseComponent implements OnInit {
     this.duration = event;
   }
 
+  generateId(): number {
+    let id: number;
+    let found: Course;
+    do {
+      id = Math.floor(Math.random() * 1000) + 1;
+      found = this.coursesServiceService.getItemById(id);
+    } while (found);
+
+    return id;
+  }
 }

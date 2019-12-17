@@ -5,7 +5,7 @@ import data from '../../assets/courses-list.json';
 @Injectable({
   providedIn: 'root'
 })
-export class CoursesServiceService {
+export class CoursesService {
   courses: Course[];
 
   constructor() {
@@ -20,7 +20,7 @@ export class CoursesServiceService {
     return this.courses.find(course => course.id === idFind);
   }
 
-  updateItem(courseFind: Course) {
+  upsertCourse(courseFind: Course) {
     const index = this.courses.findIndex(course => course.id === courseFind.id);
     if ( index > -1) {
       this.courses[index] = courseFind;
