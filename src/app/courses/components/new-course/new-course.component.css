@@ -1,0 +1,23 @@
+.main-container {
+  background: #f2f3f7;
+}
+.new-course-page {
+  width: 570px;
+  padding: 8% 0 0;
+  margin: auto;
+}
+.form {
+  position: relative;
+  z-index: 1;
+  background: #FFFFFF;
+  max-width: 500px;
+  margin: 0 auto 100px;
+  padding: 45px;
+  text-align: left;
+  box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
+}
+button {
+  margin-top: 20px;
+  margin-right: 10px;
+}
+

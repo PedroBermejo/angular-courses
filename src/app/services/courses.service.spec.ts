@@ -1,15 +1,15 @@
 import { TestBed } from '@angular/core/testing';
-import { CoursesServiceService } from './courses-service.service';
+import { CoursesService } from './courses.service';
 import {Course} from '../interfaces/course';
 
 describe('CoursesServiceService', () => {
-  let service: CoursesServiceService;
+  let service: CoursesService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [CoursesServiceService]
+      providers: [CoursesService]
     }).compileComponents();
-    service = TestBed.get(CoursesServiceService);
+    service = TestBed.get(CoursesService);
   });
 
 

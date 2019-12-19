@@ -1,2 +1,3 @@
-<input type="text" id="duration" class="duration" name="duration"
+<input type="text" id="duration" name="duration"
        (change)="inputChanged()" [(ngModel)]="duration" placeholder="Enter duration">
+<span class="duration">{{+duration | timeFormat}}</span>

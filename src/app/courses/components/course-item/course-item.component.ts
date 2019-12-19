@@ -1,5 +1,6 @@
 import {Component, Input, OnInit, Output, EventEmitter, ChangeDetectionStrategy} from '@angular/core';
 import {Course} from '../../../interfaces/course';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-course-item',
@@ -13,7 +14,7 @@ export class CourseItemComponent implements OnInit {
   @Output() editCourseItem = new EventEmitter();
   @Output() deleteCourseItem = new EventEmitter();
 
-  constructor() { }
+  constructor(private router: Router) { }
 
   ngOnInit() {
   }
@@ -26,7 +27,7 @@ export class CourseItemComponent implements OnInit {
   }
 
   openEditModal() {
-    this.editCourseItem.next(this.courseItem);
+    this.router.navigate(['courses', this.courseItem.id], {});
   }
 
 }

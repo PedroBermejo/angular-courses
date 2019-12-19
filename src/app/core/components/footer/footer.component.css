@@ -4,6 +4,7 @@
   width: 100%;
   align: right;
   height: 35px;
+  z-index: 2;
 }
 
 .copy-right {
