@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {UserEntity} from '../../interfaces/user-entity';
+import {LoginInfo, UserEntity} from '../../interfaces/user-entity';
 import {AuthorizationService} from '../../services/authorization.service';
 import {Router} from '@angular/router';
 
@@ -20,15 +20,16 @@ export class LoginPageComponent implements OnInit {
 
   logIn(form) {
     if (form.valid) {
-      const user: UserEntity = {
-        id: 1,
-        firstName: 'Generic',
-        lastName: 'Generic',
-        email: form.value.email,
+      const login: LoginInfo = {
+        login: form.value.email,
         password: form.value.password
       };
-      this.authorizationService.logIn(user);
-      this.router.navigate(['courses']);
+      this.authorizationService.logIn(login).subscribe(data => {
+        if (data) {
+          window.localStorage.setItem('authorization', JSON.stringify(data));
+          this.router.navigate(['courses']);
+        }
+      });
     }
   }
 
