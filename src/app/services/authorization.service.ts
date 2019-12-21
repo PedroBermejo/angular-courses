@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {LoginInfo, UserEntity} from '../interfaces/user-entity';
+import {Authorization, LoginInfo, UserEntity} from '../interfaces/user-entity';
 import {HttpClient} from '@angular/common/http';
 import {globalConstants} from '../global-constants';
 import {Observable} from 'rxjs';
@@ -23,7 +23,7 @@ export class AuthorizationService {
     window.localStorage.removeItem('authorization');
   }
 
-  getUserInfo(): UserEntity {
+  getUserInfo(): Authorization {
     return JSON.parse(window.localStorage.getItem('authorization'));
   }
 }

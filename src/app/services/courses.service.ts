@@ -22,15 +22,15 @@ export class CoursesService {
 
   constructor(private httpClient: HttpClient) {}
 
-  retrieveListByCount(count: number): Observable<Course[]> {
+  retrieveListByCount(count: number): Observable<any> {
     return this.httpClient.get(`${this.URL_COUNT}=${count}`);
   }
 
-  retrieveListByString(searchString: string): Observable<Course[]> {
+  retrieveListByString(searchString: string): Observable<any> {
     return this.httpClient.get(`${this.URL_SEARCH}=${searchString}`);
   }
 
-  getItemById(idFind: number): Observable<Course> {
+  getItemById(idFind: number): Observable<any> {
     return this.httpClient.get(`${this.URL_COURSES}/${idFind}`);
   }
 
