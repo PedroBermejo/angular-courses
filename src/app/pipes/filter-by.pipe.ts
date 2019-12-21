@@ -10,7 +10,7 @@ export class FilterByPipe implements PipeTransform {
       return list;
     }
 
-    return list.forEach(item =>
+    return list.filter(item =>
       item[type].toUpperCase().includes(value.toUpperCase()));
   }
 
