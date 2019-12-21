@@ -5,14 +5,9 @@ import {Component, EventEmitter, OnInit, Output} from '@angular/core';
   templateUrl: './search.component.html',
   styleUrls: ['./search.component.css']
 })
-export class SearchComponent implements OnInit {
+export class SearchComponent {
   searchTerm: string;
   @Output() term =  new EventEmitter();
-
-  constructor() { }
-
-  ngOnInit() {
-  }
 
   search() {
     this.term.next(this.searchTerm);

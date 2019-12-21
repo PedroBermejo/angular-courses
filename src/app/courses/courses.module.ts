@@ -12,6 +12,7 @@ import { DurationInputComponent } from './components/duration-input/duration-inp
 import { CoursePageComponent } from './components/course-page/course-page.component';
 import {LoginModule} from '../login/login.module';
 import {CoreModule} from '../core/core.module';
+import {RouterModule} from '@angular/router';
 
 @NgModule({
   declarations: [
@@ -29,7 +30,8 @@ import {CoreModule} from '../core/core.module';
     DirectivesModule,
     PipesModule,
     LoginModule,
-    CoreModule
+    CoreModule,
+    RouterModule
   ],
   exports: [
     CoursePageComponent

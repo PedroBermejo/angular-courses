@@ -1,14 +1,14 @@
 <div class="container item-container"
-     [appCreatedDate]="courseItem.creationDate"
-     [ngClass]="{'top-rated': courseItem.topRated}">
+     [appCreatedDate]="courseItem.date"
+     [ngClass]="{'top-rated': courseItem.isTopRated}">
 
   <div class="header row">
     <div class="title col-md-8">
-      <h3>{{courseItem.title | uppercase}}</h3>
+      <h3>{{courseItem.name | uppercase}}</h3>
     </div>
     <div class="time col-md-4">
-      <span class="duration">{{courseItem.duration | timeFormat}}</span>
-      <span class="creation-date">{{courseItem.creationDate | date}}</span>
+      <span class="duration">{{courseItem.length | timeFormat}}</span>
+      <span class="creation-date">{{courseItem.date | date}}</span>
     </div>
   </div>
 

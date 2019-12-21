@@ -1,7 +1,8 @@
 import {Component, EventEmitter, OnInit, Output} from '@angular/core';
-import {Course} from '../../../interfaces/course';
+import {Author, Course} from '../../../interfaces/course';
 import {CoursesService} from '../../../services/courses.service';
 import {ActivatedRoute, Router} from '@angular/router';
+import {Observable} from 'rxjs';
 
 @Component({
   selector: 'app-new-course',
@@ -15,6 +16,9 @@ export class NewCourseComponent implements OnInit {
   title: string;
   description: string;
   topRated = false;
+  authors: Author;
+  courseItem$: Observable<Course>;
+  isNewCourse = false;
 
   constructor(
     private coursesServiceService: CoursesService,
@@ -24,16 +28,23 @@ export class NewCourseComponent implements OnInit {
 
   ngOnInit() {
     this.activeRoute.paramMap.subscribe(params => {
-      if (params) {
-        const courseItem: Course = this.coursesServiceService.getItemById(+params.get('id'));
-        if (courseItem) {
-          this.id = courseItem.id;
-          this.date = courseItem.creationDate;
-          this.duration = courseItem.duration;
-          this.title = courseItem.title;
-          this.description = courseItem.description;
-          this.topRated = courseItem.topRated;
-        }
+      const id = +params.get('id');
+      if (id) {
+        this.courseItem$ = this.coursesServiceService.getItemById(id);
+        this.courseItem$.subscribe(data => {
+          if (data) {
+            this.id = data.id;
+            this.date = data.date;
+            this.duration = data.length;
+            this.title = data.name;
+            this.description = data.description;
+            this.topRated = data.isTopRated;
+            this.authors = data.authors;
+          }
+        });
+      } else {
+        this.isNewCourse = true;
+        this.generateId();
       }
     });
   }
@@ -41,26 +52,30 @@ export class NewCourseComponent implements OnInit {
 
   addCourse() {
     if (this.title && this.description && this.duration && this.date) {
-      console.log(this.id);
-      if (!this.id) {
-        this.id = this.generateId();
-      }
-      console.log(this.id);
       const course: Course = {
         id: this.id,
-        title: this.title,
-        creationDate: this.date,
-        duration: +this.duration,
+        name: this.title,
+        date: this.date,
+        length: +this.duration,
         description: this.description,
-        topRated: this.topRated
+        isTopRated: this.topRated,
+        authors: this.authors
       };
-      this.coursesServiceService.upsertCourse(course);
+      if (this.isNewCourse) {
+        this.coursesServiceService.createCourse(course).subscribe(() => {
+          this.router.navigate(['courses']);
+        });
+      } else {
+        this.coursesServiceService.upsertCourse(course).subscribe(() => {
+          this.router.navigate(['courses']);
+        });
+      }
     }
-    this.router.navigate(['courses'], {});
+
   }
 
   cancelAdd() {
-    this.router.navigate(['courses'], {});
+    this.router.navigate(['courses']);
   }
 
   updateDate(event) {
@@ -71,14 +86,15 @@ export class NewCourseComponent implements OnInit {
     this.duration = event;
   }
 
-  generateId(): number {
-    let id: number;
-    let found: Course;
-    do {
-      id = Math.floor(Math.random() * 1000) + 1;
-      found = this.coursesServiceService.getItemById(id);
-    } while (found);
-
-    return id;
+  generateId() {
+    const id = + 100;
+    this.coursesServiceService.getItemById(id).subscribe(
+      data => {
+        this.generateId();
+        }, error => {
+        if (error.status === 404) {
+          this.id = id;
+        }
+    });
   }
 }

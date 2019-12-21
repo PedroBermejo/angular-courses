@@ -5,6 +5,7 @@ import {CoreModule} from './core/core.module';
 import {CoursesModule} from './courses/courses.module';
 import {LoginModule} from './login/login.module';
 import {AppRoutingModule} from './app-routing.module';
+import {HttpClientModule} from '@angular/common/http';
 
 
 @NgModule({
@@ -16,7 +17,8 @@ import {AppRoutingModule} from './app-routing.module';
     CoreModule,
     LoginModule,
     AppRoutingModule,
-    CoursesModule
+    CoursesModule,
+    HttpClientModule
   ],
   providers: [],
   bootstrap: [AppComponent]
