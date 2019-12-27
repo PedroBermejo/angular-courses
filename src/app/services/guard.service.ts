@@ -1,17 +1,21 @@
 import { Injectable } from '@angular/core';
 import {ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot, UrlTree} from '@angular/router';
 import {UserEntity} from '../interfaces/user-entity';
+import {AuthorizationService} from './authorization.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class GuardService implements  CanActivate {
 
-  constructor(private router: Router) { }
+  constructor(
+    private router: Router,
+    private authorizationService: AuthorizationService) { }
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean | UrlTree {
-    const user: UserEntity = JSON.parse(window.localStorage.getItem('authorization'));
+    const authorization = this.authorizationService.getUserInfo();
     const urlTree = this.router.parseUrl('/login');
-    return user ? true : urlTree;
+    return authorization ? true : urlTree;
+
   }
 }

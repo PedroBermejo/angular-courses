@@ -33,8 +33,8 @@ describe('CourseItemComponent', () => {
 
   it('should contain values', async(() => {
       expect(component.courseItem.id).toBe(177777);
-      expect(component.courseItem.duration).toBe(6000);
-      expect(component.courseItem.title).toContain('Introduction to Algorithms, 3rd Edition (The MIT Press)');
+      expect(component.courseItem.length).toBe(6000);
+      expect(component.courseItem.name).toContain('Introduction to Algorithms, 3rd Edition (The MIT Press)');
   }));
 
   it('should output', () => {

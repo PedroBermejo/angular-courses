@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {CoursesService} from '../../../services/courses.service';
 import {Course} from '../../../interfaces/course';
+import {Observable} from 'rxjs';
 
 @Component({
   selector: 'app-course-page',
@@ -10,20 +11,31 @@ import {Course} from '../../../interfaces/course';
 export class CoursePageComponent implements OnInit {
 
   courses: Course[];
+  courses$: Observable<Course[]>;
   searchTerm: string;
 
-  constructor(private coursesServiceService: CoursesService) { }
+  constructor(private coursesService: CoursesService) {
+
+  }
 
   ngOnInit() {
-    this.courses = this.coursesServiceService.getList();
+    this.getCoursesListByCount(4);
   }
 
   delete(event) {
-    this.coursesServiceService.removeItem(event.id);
+    this.coursesService.removeItem(event.id).subscribe(() => {
+      this.getCoursesListByCount(4);
+    });
   }
 
   search(event) {
-    this.searchTerm = event;
+    if (event === undefined || event === '') {
+      this.getCoursesListByCount(4);
+      this.searchTerm = undefined;
+    } else {
+      this.getCoursesListByString(event);
+      this.searchTerm = event;
+    }
   }
 
   completeAddingCourse(event: Course) {
@@ -36,5 +48,33 @@ export class CoursePageComponent implements OnInit {
       }
     }
   }
+
+  edit(event) {
+
+  }
+
+  loadMore() {
+    const count = this.courses.length + 4;
+    this.getCoursesListByCount(count);
+  }
+
+  getCoursesListByCount(count: number) {
+    this.courses$ = this.coursesService.retrieveListByCount(count);
+    this.courses$.subscribe(data => {
+      if (data) {
+        this.courses = data;
+      }
+    });
+  }
+
+  getCoursesListByString(searchString: string) {
+    this.courses$ = this.coursesService.retrieveListByString(searchString);
+    this.courses$.subscribe(data => {
+      if (data) {
+        this.courses = data;
+      }
+    });
+  }
+
 
 }

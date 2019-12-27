@@ -1,37 +1,49 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {Course} from '../interfaces/course';
-import data from '../../assets/courses-list.json';
+import {HttpClient} from '@angular/common/http';
+import {globalConstants} from '../global-constants';
+import {Observable} from 'rxjs';
+
 
 @Injectable({
   providedIn: 'root'
 })
 export class CoursesService {
-  courses: Course[];
+  readonly URL_COUNT = `${globalConstants.endpoints.domain}/${
+    globalConstants.endpoints.courses}?${
+    globalConstants.queryParams.start}=0&${
+    globalConstants.queryParams.count}`;
+  readonly URL_SEARCH = `${globalConstants.endpoints.domain}/${
+    globalConstants.endpoints.courses}?${
+    globalConstants.queryParams.textFragment}`;
+  readonly URL_COURSES = `${globalConstants.endpoints.domain}/${
+    globalConstants.endpoints.courses}`;
 
-  constructor() {
-    this.courses = <any> data;
+
+  constructor(private httpClient: HttpClient) {}
+
+  retrieveListByCount(count: number): Observable<any> {
+    return this.httpClient.get(`${this.URL_COUNT}=${count}`);
   }
 
-  getList(): Course[] {
-    return this.courses;
+  retrieveListByString(searchString: string): Observable<any> {
+    return this.httpClient.get(`${this.URL_SEARCH}=${searchString}`);
   }
 
-  getItemById(idFind: number): Course {
-    return this.courses.find(course => course.id === idFind);
+  getItemById(idFind: number): Observable<any> {
+    return this.httpClient.get(`${this.URL_COURSES}/${idFind}`);
   }
 
-  upsertCourse(courseFind: Course) {
-    const index = this.courses.findIndex(course => course.id === courseFind.id);
-    if ( index > -1) {
-      this.courses[index] = courseFind;
-    } else {
-      this.courses.push(courseFind);
-    }
+  upsertCourse(courseFind: Course): Observable<any> {
+    return this.httpClient.patch(`${this.URL_COURSES}/${courseFind.id}`, courseFind);
   }
 
-  removeItem(idRemove: number) {
-    const index = this.courses.findIndex(({ id }) => id === idRemove);
-    this.courses.splice(index, 1);
+  removeItem(idRemove: number): Observable<any> {
+    return this.httpClient.delete(`${this.URL_COURSES}/${idRemove}`);
+  }
+
+  createCourse(courseCreate: Course): Observable<any> {
+    return this.httpClient.post(`${this.URL_COURSES}`, courseCreate);
   }
 
 }
