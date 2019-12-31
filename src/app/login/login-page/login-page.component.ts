@@ -1,22 +1,19 @@
-import { Component, OnInit } from '@angular/core';
-import {LoginInfo, UserEntity} from '../../interfaces/user-entity';
-import {AuthorizationService} from '../../services/authorization.service';
-import {Router} from '@angular/router';
+import { Component } from '@angular/core';
+import { LoginInfo } from '../../interfaces/user-entity';
+import { AuthorizationService } from '../../services/authorization.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login-page',
   templateUrl: './login-page.component.html',
   styleUrls: ['./login-page.component.css']
 })
-export class LoginPageComponent implements OnInit {
+export class LoginPageComponent {
 
   constructor(
     private router: Router,
     private authorizationService: AuthorizationService
   ) { }
-
-  ngOnInit() {
-  }
 
   logIn(form) {
     if (form.valid) {

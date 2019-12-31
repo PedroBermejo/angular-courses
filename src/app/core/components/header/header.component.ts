@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
-import {AuthorizationService} from '../../../services/authorization.service';
-import {Router} from '@angular/router';
+import { AuthorizationService } from '../../../services/authorization.service';
+import { Router } from '@angular/router';
+
 
 @Component({
   selector: 'app-header',
@@ -8,6 +9,7 @@ import {Router} from '@angular/router';
   styleUrls: ['./header.component.css']
 })
 export class HeaderComponent {
+
   constructor(
     private router: Router,
     private authorizationService: AuthorizationService
@@ -17,5 +19,6 @@ export class HeaderComponent {
     this.authorizationService.logOut();
     this.router.navigate(['login'], {});
   }
+
 
 }

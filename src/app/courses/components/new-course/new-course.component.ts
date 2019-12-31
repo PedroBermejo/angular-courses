@@ -87,7 +87,7 @@ export class NewCourseComponent implements OnInit {
   }
 
   generateId() {
-    const id = + 100;
+    const id = Math.floor(Math.random() * 1000) + 1;
     this.coursesServiceService.getItemById(id).subscribe(
       data => {
         this.generateId();
