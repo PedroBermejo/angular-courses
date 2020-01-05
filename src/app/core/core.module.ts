@@ -7,10 +7,11 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { BreadcrumbsComponent } from './components/breadcrumbs/breadcrumbs.component';
 import { NotFoundComponent } from './components/not-found/not-found.component';
 import {RouterModule} from '@angular/router';
+import { LoadingComponent } from './components/loading/loading.component';
 
 
 @NgModule({
-  declarations: [HeaderComponent, FooterComponent, FakeLogoComponent, BreadcrumbsComponent, NotFoundComponent],
+  declarations: [HeaderComponent, FooterComponent, FakeLogoComponent, BreadcrumbsComponent, NotFoundComponent, LoadingComponent],
   imports: [
     CommonModule,
     FontAwesomeModule,
@@ -20,7 +21,8 @@ import {RouterModule} from '@angular/router';
     HeaderComponent,
     FooterComponent,
     BreadcrumbsComponent,
-    NotFoundComponent
+    NotFoundComponent,
+    LoadingComponent
   ]
 })
 export class CoreModule { }

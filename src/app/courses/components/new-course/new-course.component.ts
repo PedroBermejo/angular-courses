@@ -3,6 +3,8 @@ import {Author, Course} from '../../../interfaces/course';
 import {CoursesService} from '../../../services/courses.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Observable} from 'rxjs';
+import {LoadingService} from '../../../services/loading.service';
+import {finalize} from 'rxjs/operators';
 
 @Component({
   selector: 'app-new-course',
@@ -23,7 +25,8 @@ export class NewCourseComponent implements OnInit {
   constructor(
     private coursesServiceService: CoursesService,
     private activeRoute: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private loadingService: LoadingService
   ) { }
 
   ngOnInit() {
@@ -31,7 +34,10 @@ export class NewCourseComponent implements OnInit {
       const id = +params.get('id');
       if (id) {
         this.courseItem$ = this.coursesServiceService.getItemById(id);
-        this.courseItem$.subscribe(data => {
+        this.loadingService.togleLoading(true);
+        this.courseItem$.pipe(
+          finalize(() => this.loadingService.togleLoading(false))
+        ).subscribe(data => {
           if (data) {
             this.id = data.id;
             this.date = data.date;
@@ -62,11 +68,17 @@ export class NewCourseComponent implements OnInit {
         authors: this.authors
       };
       if (this.isNewCourse) {
-        this.coursesServiceService.createCourse(course).subscribe(() => {
+        this.loadingService.togleLoading(true);
+        this.coursesServiceService.createCourse(course).pipe(
+          finalize(() => this.loadingService.togleLoading(false))
+        ).subscribe(() => {
           this.router.navigate(['courses']);
         });
       } else {
-        this.coursesServiceService.upsertCourse(course).subscribe(() => {
+        this.loadingService.togleLoading(true);
+        this.coursesServiceService.upsertCourse(course).pipe(
+          finalize(() => this.loadingService.togleLoading(false))
+        ).subscribe(() => {
           this.router.navigate(['courses']);
         });
       }

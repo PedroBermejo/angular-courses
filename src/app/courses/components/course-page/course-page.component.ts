@@ -3,7 +3,8 @@ import {CoursesService} from '../../../services/courses.service';
 import {Course} from '../../../interfaces/course';
 import {fromEvent, Observable, Subject, Subscription} from 'rxjs';
 import {SearchComponent} from '../search/search.component';
-import {distinctUntilChanged, filter, map, switchMap, takeUntil, throttleTime} from 'rxjs/operators';
+import {distinctUntilChanged, filter, finalize, map, switchMap, takeUntil, throttleTime} from 'rxjs/operators';
+import {LoadingService} from '../../../services/loading.service';
 
 @Component({
   selector: 'app-course-page',
@@ -18,7 +19,9 @@ export class CoursePageComponent implements OnInit, AfterViewInit, OnDestroy {
   destroy$: Subject<boolean> = new Subject<boolean>();
   @ViewChild('inputChild', {read: ViewContainerRef, static: false}) inputChild: ViewContainerRef;
 
-  constructor(private coursesService: CoursesService) { }
+  constructor(
+    private coursesService: CoursesService,
+    private loadingService: LoadingService ) { }
 
   ngOnInit() {
     this.getCoursesListByCount(4);
@@ -35,6 +38,7 @@ export class CoursePageComponent implements OnInit, AfterViewInit, OnDestroy {
       switchMap( input => {
         if (input.length > 2) {
           this.showLoadMore = false;
+          this.loadingService.togleLoading(true);
           return this.coursesService.retrieveListByString(input);
         } else {
           this.showLoadMore = true;
@@ -45,7 +49,11 @@ export class CoursePageComponent implements OnInit, AfterViewInit, OnDestroy {
       if (data) {
         this.courses = data as Course[];
       }
-      }, error => { console.log(error); }
+      this.loadingService.togleLoading(false);
+      }, error => {
+      console.log(error);
+      this.loadingService.togleLoading(false);
+    }
     );
   }
 
@@ -55,20 +63,11 @@ export class CoursePageComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   delete(event) {
+    this.loadingService.togleLoading(true);
     this.coursesService.removeItem(event.id).subscribe(() => {
       this.getCoursesListByCount(4);
+      this.loadingService.togleLoading(false);
     });
-  }
-
-  completeAddingCourse(event: Course) {
-    if (event) {
-      const idCourseItem = this.courses.findIndex(item => item.id === event.id);
-      if (idCourseItem >= 0) {
-        this.courses[idCourseItem] = event;
-      } else {
-        this.courses.push(event);
-      }
-    }
   }
 
   loadMore() {
@@ -78,7 +77,10 @@ export class CoursePageComponent implements OnInit, AfterViewInit, OnDestroy {
 
   getCoursesListByCount(count: number) {
     this.courses$ = this.coursesService.retrieveListByCount(count);
-    this.courses$.subscribe(data => {
+    this.loadingService.togleLoading(true);
+    this.courses$.pipe(
+      finalize(() => this.loadingService.togleLoading(false))
+    ).subscribe(data => {
       if (data) {
         this.courses = data;
       }
