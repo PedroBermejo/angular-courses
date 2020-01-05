@@ -35,18 +35,18 @@ export class CoursesService {
       idFind.toString()));
   }
 
-  upsertCourse(courseFind: Course): Observable<any> {
-    return this.httpClient.patch(Location.joinWithSlash(this.URL_COURSES,
-      courseFind.id.toString()), courseFind);
+  upsertCourse(courseFind: Course, newCourse: boolean): Observable<any> {
+    if (newCourse) {
+      return this.httpClient.post(`${this.URL_COURSES}`, courseFind);
+    } else {
+      return this.httpClient.patch(Location.joinWithSlash(this.URL_COURSES,
+        courseFind.id.toString()), courseFind);
+    }
   }
 
   removeItem(idRemove: number): Observable<any> {
     return this.httpClient.delete(Location.joinWithSlash(this.URL_COURSES,
       idRemove.toString()));
-  }
-
-  createCourse(courseCreate: Course): Observable<any> {
-    return this.httpClient.post(`${this.URL_COURSES}`, courseCreate);
   }
 
 }

@@ -67,23 +67,13 @@ export class NewCourseComponent implements OnInit {
         isTopRated: this.topRated,
         authors: this.authors
       };
-      if (this.isNewCourse) {
-        this.loadingService.togleLoading(true);
-        this.coursesServiceService.createCourse(course).pipe(
-          finalize(() => this.loadingService.togleLoading(false))
-        ).subscribe(() => {
-          this.router.navigate(['courses']);
-        });
-      } else {
-        this.loadingService.togleLoading(true);
-        this.coursesServiceService.upsertCourse(course).pipe(
-          finalize(() => this.loadingService.togleLoading(false))
-        ).subscribe(() => {
-          this.router.navigate(['courses']);
-        });
-      }
+      this.loadingService.togleLoading(true);
+      this.coursesServiceService.upsertCourse(course, this.isNewCourse).pipe(
+        finalize(() => this.loadingService.togleLoading(false))
+      ).subscribe(() => {
+        this.router.navigate(['courses']);
+      });
     }
-
   }
 
   cancelAdd() {
