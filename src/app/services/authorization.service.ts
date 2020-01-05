@@ -2,13 +2,15 @@ import { Injectable } from '@angular/core';
 import {Authorization, LoginInfo} from '../interfaces/user-entity';
 import {HttpClient} from '@angular/common/http';
 import {globalConstants} from '../global-constants';
-import {Observable, throwError} from 'rxjs';
+import {Observable, of, Subject, throwError} from 'rxjs';
 import {Location} from '@angular/common';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthorizationService {
+
+  subject = new Subject<Observable<any>>();
 
   readonly URL_AUTHORIZATION = Location.joinWithSlash(globalConstants.endpoints.domain,
     globalConstants.endpoints.authorizationLogin);
@@ -29,9 +31,15 @@ export class AuthorizationService {
   getUserInfo(): Observable<any> {
     const authorization: Authorization = JSON.parse(window.localStorage.getItem('authorization'));
     if (authorization) {
-      return this.httpClient.post(this.URL_USER_INFO, authorization);
+      const observable$ =  this.httpClient.post(this.URL_USER_INFO, authorization);
+      this.subject.next(observable$);
+      return observable$;
     } else {
       return throwError('Not logged in');
     }
+  }
+
+  getSubject(): Subject<Observable<any>> {
+    return this.subject;
   }
 }
