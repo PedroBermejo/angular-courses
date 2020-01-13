@@ -1,9 +1,16 @@
 .log-in {
-  text-align: right;
   color: white;
+  right: 0%;
 }
 
 .log-text {
   padding: 5px;
+  color: white;
+}
+
+.user-info {
+  position: absolute;
+  right: 2%;
+  text-align: center;
   color: white;
 }

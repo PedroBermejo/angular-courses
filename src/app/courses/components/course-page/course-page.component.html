@@ -1,6 +1,6 @@
 <app-breadcrumbs></app-breadcrumbs>
 <div class="course-container" >
-  <app-search (term)="search($event)"></app-search>
+  <app-search #inputChild></app-search>
   <app-add></app-add>
   <div class="course-items-container">
     <li *ngFor="let item of courses | sortBy: 'creationDate'">
@@ -10,7 +10,7 @@
       NO DATA. FEEL FREE TO ADD NEW COURSE
     </li>
     <li>
-      <div *ngIf="!searchTerm">
+      <div *ngIf="showLoadMore">
         <a [routerLink]="" (click)="loadMore()">LOAD MORE...</a>
       </div>
     </li>

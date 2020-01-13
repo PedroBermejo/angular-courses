@@ -12,8 +12,8 @@ export interface UserEntity {
 }
 
 interface Name {
-  firstName: string;
-  lastName: string;
+  first: string;
+  last: string;
 }
 
 export interface Authorization {
