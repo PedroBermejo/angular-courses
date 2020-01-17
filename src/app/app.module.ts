@@ -8,11 +8,11 @@ import {AppRoutingModule} from './app-routing.module';
 import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import {AuthInterceptorService} from './services/auth-interceptor.service';
 import { StoreModule } from '@ngrx/store';
-import { reducers, metaReducers } from './store/reducers';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { environment } from '../environments/environment';
 import { EffectsModule } from '@ngrx/effects';
-import { AppEffects } from './store/effects/app.effects';
+import { AppEffects } from './store/app.effects';
+import {coursesReducer} from './store/app.reducers';
 
 
 @NgModule({
@@ -26,12 +26,8 @@ import { AppEffects } from './store/effects/app.effects';
     AppRoutingModule,
     CoursesModule,
     HttpClientModule,
-    StoreModule.forRoot(reducers, {
-      metaReducers, 
-      runtimeChecks: {
-        strictStateImmutability: true,
-        strictActionImmutability: true,
-      }
+    StoreModule.forRoot( {
+      courses: coursesReducer
     }),
     !environment.production ? StoreDevtoolsModule.instrument() : [],
     EffectsModule.forRoot([AppEffects])
