@@ -8,6 +8,7 @@ export class LoadingService {
   subject = new Subject<boolean>();
 
   togleLoading(loading: boolean) {
+    console.log(loading);
     this.subject.next(loading);
   }
 

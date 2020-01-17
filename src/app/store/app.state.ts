@@ -1,5 +1,5 @@
-import {Course} from '../interfaces/course';
+import { CourseState } from '../interfaces/course';
 
 export interface AppState {
-  readonly courses: Course[];
+  readonly courses: CourseState;
 }

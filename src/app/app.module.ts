@@ -29,8 +29,8 @@ import {coursesReducer} from './store/app.reducers';
     StoreModule.forRoot( {
       courses: coursesReducer
     }),
-    !environment.production ? StoreDevtoolsModule.instrument() : [],
-    EffectsModule.forRoot([AppEffects])
+    EffectsModule.forRoot([AppEffects]),
+    !environment.production ? StoreDevtoolsModule.instrument() : []
   ],
   providers: [{
     provide: HTTP_INTERCEPTORS,

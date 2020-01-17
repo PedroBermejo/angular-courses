@@ -13,3 +13,9 @@ export interface Author {
   name: string;
   lastName: string;
 }
+
+export interface CourseState {
+  courses: Course[];
+  loading: boolean;
+  error: Error;
+}

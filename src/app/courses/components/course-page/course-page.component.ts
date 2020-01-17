@@ -1,10 +1,12 @@
-import {AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild, ViewContainerRef} from '@angular/core';
+import {AfterViewInit, Component, OnDestroy, OnInit, ViewChild, ViewContainerRef} from '@angular/core';
 import {CoursesService} from '../../../services/courses.service';
 import {Course} from '../../../interfaces/course';
 import {fromEvent, Observable, Subject, Subscription} from 'rxjs';
-import {SearchComponent} from '../search/search.component';
 import {distinctUntilChanged, filter, finalize, map, switchMap, takeUntil, throttleTime} from 'rxjs/operators';
 import {LoadingService} from '../../../services/loading.service';
+import {Store} from '@ngrx/store';
+import {AppState} from '../../../store/app.state';
+import * as AppActions from './../../../store/app.actions';
 
 @Component({
   selector: 'app-course-page',
@@ -12,7 +14,6 @@ import {LoadingService} from '../../../services/loading.service';
   styleUrls: ['./course-page.component.css']
 })
 export class CoursePageComponent implements OnInit, AfterViewInit, OnDestroy {
-  courses: Course[];
   courses$: Observable<Course[]>;
   search$: Subscription;
   showLoadMore = true;
@@ -21,10 +22,15 @@ export class CoursePageComponent implements OnInit, AfterViewInit, OnDestroy {
 
   constructor(
     private coursesService: CoursesService,
-    private loadingService: LoadingService ) { }
+    private loadingService: LoadingService,
+    private store: Store<AppState>) {  }
 
   ngOnInit() {
-    this.getCoursesListByCount(4);
+    this.courses$ = this.store.select( store => store.courses.courses);
+    this.store.select(store => store.courses.loading).subscribe(
+      data => this.loadingService.togleLoading(data)
+    );
+    this.store.dispatch(new AppActions.GetCourses(4));
   }
 
   ngAfterViewInit() {
@@ -38,7 +44,6 @@ export class CoursePageComponent implements OnInit, AfterViewInit, OnDestroy {
       switchMap( input => {
         if (input.length > 2) {
           this.showLoadMore = false;
-          this.loadingService.togleLoading(true);
           return this.coursesService.retrieveListByString(input);
         } else {
           this.showLoadMore = true;
@@ -49,10 +54,8 @@ export class CoursePageComponent implements OnInit, AfterViewInit, OnDestroy {
       if (data) {
         this.courses = data as Course[];
       }
-      this.loadingService.togleLoading(false);
       }, error => {
       console.log(error);
-      this.loadingService.togleLoading(false);
     }
     );
   }
@@ -63,27 +66,13 @@ export class CoursePageComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   delete(event) {
-    this.loadingService.togleLoading(true);
     this.coursesService.removeItem(event.id).subscribe(() => {
-      this.getCoursesListByCount(4);
-      this.loadingService.togleLoading(false);
+      this.store.dispatch(new AppActions.GetCourses( 4));
     });
   }
 
-  loadMore() {
-    const count = this.courses.length + 4;
-    this.getCoursesListByCount(count);
+  loadMore(count: number) {
+    this.store.dispatch(new AppActions.GetCourses(count + 4));
   }
 
-  getCoursesListByCount(count: number) {
-    this.courses$ = this.coursesService.retrieveListByCount(count);
-    this.loadingService.togleLoading(true);
-    this.courses$.pipe(
-      finalize(() => this.loadingService.togleLoading(false))
-    ).subscribe(data => {
-      if (data) {
-        this.courses = data;
-      }
-    });
-  }
 }
