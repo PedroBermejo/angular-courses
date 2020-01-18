@@ -35,7 +35,7 @@ export class CoursePageComponent implements OnInit, AfterViewInit, OnDestroy {
 
   ngAfterViewInit() {
     const inputText = this.inputChild.element.nativeElement.querySelector('.inner-text');
-    this.search$ = fromEvent(inputText, 'keyup').pipe(
+    fromEvent(inputText, 'keyup').pipe(
       takeUntil(this.destroy$),
       map(() => inputText.value),
       filter(text => !!text),
@@ -44,20 +44,13 @@ export class CoursePageComponent implements OnInit, AfterViewInit, OnDestroy {
       switchMap( input => {
         if (input.length > 2) {
           this.showLoadMore = false;
-          return this.coursesService.retrieveListByString(input);
+          this.store.dispatch(new AppActions.GetStringCourses(input));
         } else {
           this.showLoadMore = true;
-          return this.coursesService.retrieveListByCount(4);
+          this.store.dispatch(new AppActions.GetCourses(4));
         }
-      } )
-    ).subscribe( data => {
-      if (data) {
-        this.courses = data as Course[];
-      }
-      }, error => {
-      console.log(error);
-    }
-    );
+      })
+    ).subscribe();
   }
 
   ngOnDestroy() {
@@ -66,9 +59,7 @@ export class CoursePageComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   delete(event) {
-    this.coursesService.removeItem(event.id).subscribe(() => {
-      this.store.dispatch(new AppActions.GetCourses( 4));
-    });
+    this.store.dispatch(new AppActions.DeleteCourse(event.id));
   }
 
   loadMore(count: number) {

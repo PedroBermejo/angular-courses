@@ -5,6 +5,9 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {Observable} from 'rxjs';
 import {LoadingService} from '../../../services/loading.service';
 import {finalize} from 'rxjs/operators';
+import {Store} from '@ngrx/store';
+import {AppState} from '../../../store/app.state';
+import * as AppActions from '../../../store/app.actions';
 
 @Component({
   selector: 'app-new-course',
@@ -26,33 +29,36 @@ export class NewCourseComponent implements OnInit {
     private coursesServiceService: CoursesService,
     private activeRoute: ActivatedRoute,
     private router: Router,
-    private loadingService: LoadingService
+    private loadingService: LoadingService,
+    private store: Store<AppState>
   ) { }
 
   ngOnInit() {
     this.activeRoute.paramMap.subscribe(params => {
       const id = +params.get('id');
       if (id) {
-        this.courseItem$ = this.coursesServiceService.getItemById(id);
-        this.loadingService.togleLoading(true);
-        this.courseItem$.pipe(
-          finalize(() => this.loadingService.togleLoading(false))
-        ).subscribe(data => {
-          if (data) {
-            this.id = data.id;
-            this.date = data.date;
-            this.duration = data.length;
-            this.title = data.name;
-            this.description = data.description;
-            this.topRated = data.isTopRated;
-            this.authors = data.authors;
+        this.store.select( store => store.courses.courses).subscribe(
+          courses => {
+            const course = courses.find( item => item.id === id);
+            if (course) {
+              this.id = course.id;
+              this.date = course.date;
+              this.duration = course.length;
+              this.title = course.name;
+              this.description = course.description;
+              this.topRated = course.isTopRated;
+              this.authors = course.authors;
+            }
           }
-        });
+        );
       } else {
         this.isNewCourse = true;
         this.generateId();
       }
     });
+    this.store.select(store => store.courses.loading).subscribe(
+      data => this.loadingService.togleLoading(data)
+    );
   }
 
 
@@ -67,12 +73,12 @@ export class NewCourseComponent implements OnInit {
         isTopRated: this.topRated,
         authors: this.authors
       };
-      this.loadingService.togleLoading(true);
-      this.coursesServiceService.upsertCourse(course, this.isNewCourse).pipe(
-        finalize(() => this.loadingService.togleLoading(false))
-      ).subscribe(() => {
-        this.router.navigate(['courses']);
-      });
+      if (this.isNewCourse) {
+        this.store.dispatch(new AppActions.AddCourse(course));
+      } else {
+        this.store.dispatch(new AppActions.EditCourse(course));
+      }
+      this.router.navigate(['courses']);
     }
   }
 
