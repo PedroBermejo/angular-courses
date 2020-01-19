@@ -1,7 +1,7 @@
 import {AfterViewInit, Component, OnDestroy, OnInit, ViewChild, ViewContainerRef} from '@angular/core';
 import {CoursesService} from '../../../services/courses.service';
 import {Course} from '../../../interfaces/course';
-import {fromEvent, Observable, Subject, Subscription} from 'rxjs';
+import {fromEvent, Observable, of, Subject, Subscription} from 'rxjs';
 import {distinctUntilChanged, filter, finalize, map, switchMap, takeUntil, throttleTime} from 'rxjs/operators';
 import {LoadingService} from '../../../services/loading.service';
 import {Store} from '@ngrx/store';
@@ -38,10 +38,9 @@ export class CoursePageComponent implements OnInit, AfterViewInit, OnDestroy {
     fromEvent(inputText, 'keyup').pipe(
       takeUntil(this.destroy$),
       map(() => inputText.value),
-      filter(text => !!text),
       distinctUntilChanged(),
       throttleTime(200),
-      switchMap( input => {
+      switchMap( (input: string) => {
         if (input.length > 2) {
           this.showLoadMore = false;
           this.store.dispatch(new AppActions.GetStringCourses(input));
@@ -49,6 +48,7 @@ export class CoursePageComponent implements OnInit, AfterViewInit, OnDestroy {
           this.showLoadMore = true;
           this.store.dispatch(new AppActions.GetCourses(4));
         }
+        return of({});
       })
     ).subscribe();
   }

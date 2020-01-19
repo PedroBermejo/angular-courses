@@ -4,12 +4,28 @@ import {Author, Course, CourseState} from '../interfaces/course';
 const initialState: CourseState = {
   courses: [],
   loading: false,
-  error: undefined
+  error: undefined,
+  user: undefined
 };
 
 export function coursesReducer(state: CourseState = initialState, action: AppActions.Actions) {
 
   switch (action.type) {
+    case AppActions.AUTHORIZATION:
+      return {
+        ...state,
+      };
+    case AppActions.AUTHORIZATION_SUCCESS:
+      return {
+        ...state,
+        user: action.payload,
+      };
+    case AppActions.AUTHORIZATION_FAILURE:
+      return {
+        ...state,
+        user: undefined,
+        error: action.payload,
+      };
     case AppActions.GET_COURSES_BY_COUNT:
       return {
         ...state,

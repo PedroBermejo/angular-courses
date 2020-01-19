@@ -4,9 +4,26 @@ import { map, mergeMap, catchError } from 'rxjs/operators';
 import * as AppActions from './app.actions';
 import { of } from 'rxjs';
 import {CoursesService} from '../services/courses.service';
+import {AuthorizationService} from '../services/authorization.service';
+import {Router} from '@angular/router';
 
 @Injectable()
 export class AppEffects {
+
+  @Effect() authorization$ = this.actions$
+    .pipe(
+      ofType<AppActions.Authorization>(AppActions.AUTHORIZATION),
+      mergeMap(
+        (loginInfo) => this.authorizationService.logIn(loginInfo.payload)
+          .pipe(
+            map((data) => {
+              this.router.navigate(['courses']);
+              return new AppActions.AuthorizationSuccess(data);
+            }),
+            catchError(error => of(new AppActions.AuthorizationFailure(error)))
+          )
+      ),
+    );
 
   @Effect() loadCourses$ = this.actions$
     .pipe(
@@ -80,6 +97,8 @@ export class AppEffects {
 
   constructor(
     private actions$: Actions,
-    private coursesService: CoursesService
+    private coursesService: CoursesService,
+    private authorizationService: AuthorizationService,
+    private router: Router
   ) { }
 }

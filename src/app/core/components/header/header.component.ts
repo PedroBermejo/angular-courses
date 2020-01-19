@@ -2,7 +2,9 @@ import {Component, OnInit} from '@angular/core';
 import { AuthorizationService } from '../../../services/authorization.service';
 import { Router } from '@angular/router';
 import {UserEntity} from '../../../interfaces/user-entity';
-
+import {Store} from '@ngrx/store';
+import {AppState} from '../../../store/app.state';
+import * as AppActions from '../../../store/app.actions';
 
 @Component({
   selector: 'app-header',
@@ -15,24 +17,20 @@ export class HeaderComponent implements OnInit {
 
   constructor(
     private router: Router,
-    private authorizationService: AuthorizationService
+    private authorizationService: AuthorizationService,
+    private store: Store<AppState>
   ) { }
 
   ngOnInit() {
-    this.authorizationService.getSubject().subscribe(data => {
+    this.store.select(store => store.courses.user).subscribe( data => {
       if (data) {
-        data.subscribe( user => {
-          console.log(user);
-          if (user) {
-            this.userInfo = user as UserEntity;
-          }
-        });
+        this.userInfo = data;
       }
     });
   }
 
   logOff() {
-    this.authorizationService.logOut();
+    this.store.dispatch(new AppActions.Authorization(undefined));
     this.userInfo = undefined;
     this.router.navigate(['login'], {});
   }

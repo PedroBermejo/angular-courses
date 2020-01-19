@@ -1,5 +1,6 @@
 import { Action } from '@ngrx/store';
 import {Course} from '../interfaces/course';
+import {LoginInfo, UserEntity} from '../interfaces/user-entity';
 
 export const GET_COURSES_BY_COUNT = '[COURSES] Get';
 export const GET_COURSES_BY_COUNT_SUCCESS = '[COURSES] Get Success';
@@ -20,6 +21,10 @@ export const EDIT_COURSE_BY_ID_FAILURE = '[COURSES] Edit Failure';
 export const ADD_COURSE = '[COURSES] Add';
 export const ADD_COURSE_SUCCESS = '[COURSES] Add Success';
 export const ADD_COURSE_FAILURE = '[COURSES] Add Failure';
+
+export const AUTHORIZATION = '[COURSES] Authorization';
+export const AUTHORIZATION_SUCCESS = '[COURSES] Authorization Success';
+export const AUTHORIZATION_FAILURE = '[COURSES] Authorization Failure';
 
 export class GetCourses implements Action {
   readonly type = GET_COURSES_BY_COUNT;
@@ -94,6 +99,21 @@ export class AddCourseFailure implements Action {
   constructor(public payload: Error) {}
 }
 
+export class Authorization implements Action {
+  readonly type = AUTHORIZATION;
+  constructor(public payload: LoginInfo) {}
+}
+
+export class AuthorizationSuccess implements Action {
+  readonly type = AUTHORIZATION_SUCCESS;
+  constructor(public payload: UserEntity, ) {}
+}
+
+export class AuthorizationFailure implements Action {
+  readonly type = AUTHORIZATION_FAILURE;
+  constructor(public payload: Error) {}
+}
+
 export type Actions = GetCourses |
   GetCoursesSuccess |
   GetCoursesFailure |
@@ -108,4 +128,7 @@ export type Actions = GetCourses |
   AddCourseFailure |
   GetStringCourses |
   GetStringCoursesSuccess |
-  GetStringCoursesFailure;
+  GetStringCoursesFailure |
+  Authorization |
+  AuthorizationSuccess |
+  AuthorizationFailure;

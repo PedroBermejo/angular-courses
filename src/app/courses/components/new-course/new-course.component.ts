@@ -1,10 +1,9 @@
-import {Component, EventEmitter, OnInit, Output} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {Author, Course} from '../../../interfaces/course';
 import {CoursesService} from '../../../services/courses.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Observable} from 'rxjs';
 import {LoadingService} from '../../../services/loading.service';
-import {finalize} from 'rxjs/operators';
 import {Store} from '@ngrx/store';
 import {AppState} from '../../../store/app.state';
 import * as AppActions from '../../../store/app.actions';

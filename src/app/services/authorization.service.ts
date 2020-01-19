@@ -24,10 +24,6 @@ export class AuthorizationService {
     return this.httpClient.post(this.URL_AUTHORIZATION, user);
   }
 
-  logOut() {
-    window.localStorage.removeItem('authorization');
-  }
-
   getUserInfo(): Observable<any> {
     const authorization: Authorization = JSON.parse(window.localStorage.getItem('authorization'));
     if (authorization) {
