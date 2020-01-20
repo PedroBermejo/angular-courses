@@ -73,9 +73,9 @@ export class NewCourseComponent implements OnInit {
         authors: this.authors
       };
       if (this.isNewCourse) {
-        this.store.dispatch(new AppActions.AddCourse(course));
+        this.store.dispatch(AppActions.addCourse({course: course}));
       } else {
-        this.store.dispatch(new AppActions.EditCourse(course));
+        this.store.dispatch(AppActions.editCourse({course: course}));
       }
       this.router.navigate(['courses']);
     }

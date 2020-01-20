@@ -12,35 +12,35 @@ const initialState: CourseState = {
 export function coursesReducer(state: CourseState = initialState, action: AppActions) {
 
   switch (action.type) {
-    case AppActions.LOGIN:
+    case AppActions.logIn.type:
       return {
         ...state,
       };
-    case AppActions.LOGIN_SUCCESS:
+    case AppActions.logInSuccess.type:
       return {
         ...state,
-        authorization: action.payload,
+        authorization: action.authorization,
       };
-    case AppActions.LOGIN_FAILURE:
+    case AppActions.logInFailure:
       return {
         ...state,
         authorization: undefined,
-        error: action.payload,
+        error: action.error,
       };
-    case AppActions.GET_USER:
+    case AppActions.getUser:
       return {
         ...state,
       };
-    case AppActions.GET_USER_SUCCESS:
+    case AppActions.getUserSuccess:
       return {
         ...state,
-        user: action.payload,
+        user: action.user,
       };
-    case AppActions.GET_USER_FAILURE:
+    case AppActions.getUserFailure:
       return {
         ...state,
         user: undefined,
-        error: action.payload,
+        error: action.error,
       };
     case AppActions.getCourses.type:
       return {
@@ -53,78 +53,81 @@ export function coursesReducer(state: CourseState = initialState, action: AppAct
         courses: action.courses,
         loading: false
       };
-    case AppActions.GET_COURSES_BY_COUNT_FAILURE:
+    case AppActions.getCoursesFailure:
       return {
         ...state,
-        error: action.payload,
+        error: action.error,
         loading: false
       };
-    case AppActions.GET_COURSES_BY_STRING:
+    case AppActions.getStringCourses:
       return {
         ...state,
         loading: true
       };
-    case AppActions.GET_COURSES_BY_STRING_SUCCESS:
+    case AppActions.getStringCoursesSuccess:
       return {
         ...state,
-        courses: action.payload,
+        courses: action.courses,
         loading: false
       };
-    case AppActions.GET_COURSES_BY_STRING_FAILURE:
+    case AppActions.getStringCoursesFailure:
       return {
         ...state,
-        error: action.payload,
+        error: action.error,
         loading: false
       };
-    case AppActions.DELETE_COURSE_BY_ID:
+    case AppActions.deleteCourse:
       return {
         ...state,
         loading: true
       };
-    case AppActions.DELETE_COURSE_BY_ID_SUCCESS:
+    case AppActions.deleteCourseSuccess:
       return {
         ...state,
-        courses: state.courses.filter(item => item.id !== action.payload),
+        courses: state.courses.filter(item => {
+          console.log(action);
+          return item.id !== action.id;
+        }),
         loading: false
       };
-    case AppActions.DELETE_COURSE_BY_ID_FAILURE:
+    case AppActions.deleteCourseFailure:
       return {
         ...state,
-        error: action.payload,
+        error: action.error,
         loading: false
       };
-    case AppActions.EDIT_COURSE_BY_ID:
+    case AppActions.editCourse:
       return {
         ...state,
         loading: true
       };
-    case AppActions.EDIT_COURSE_BY_ID_SUCCESS:
+    case AppActions.editCourseSuccess:
       return {
         ...state,
         courses: state.courses.map(item =>
-          item.id === action.payload.id ? action.payload : item),
+          item.id === action.course.id ? action.course : item),
         loading: false
       };
-    case AppActions.EDIT_COURSE_BY_ID_FAILURE:
+    case AppActions.editCourseFailure:
       return {
         ...state,
-        error: action.payload,
+        error: action.error,
         loading: false
       };
-    case AppActions.ADD_COURSE:
+    case AppActions.addCourse:
       return {
         ...state,
         loading: true
       };
-    case AppActions.ADD_COURSE_SUCCESS:
+    case AppActions.addCourseSuccess:
       return {
         ...state,
         loading: false
       };
-    case AppActions.ADD_COURSE_FAILURE:
+    case AppActions.addCourseFailure:
       return {
         ...state,
-        error: action.payload,
+        error: action.error,
         loading: false
       };
     default:

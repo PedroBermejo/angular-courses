@@ -11,48 +11,51 @@ import {UserEntity} from '../interfaces/user-entity';
 @Injectable()
 export class AppEffects {
 
-  @Effect() login$ = this.actions$
-    .pipe(
-      ofType<AppActions.LogIn>(AppActions.LOGIN),
+  login$ = createEffect(
+    () => this.actions$.pipe(
+      ofType(AppActions.logIn),
       mergeMap(
-        (loginInfo) => this.authorizationService.logIn(loginInfo.payload)
+        (input) => this.authorizationService.logIn(input.login)
           .pipe(
             map((data) => {
-              return new AppActions.LogInSuccess(data);
+              return AppActions.logInSuccess({authorization: data});
             }),
-            catchError(error => of(new AppActions.LogInFailure(error)))
+            catchError(error => of(AppActions.logInFailure({error})))
           )
       ),
-    );
+    )
+  );
 
-  @Effect() loginSuccess$ = this.actions$
-    .pipe(
-      ofType<AppActions.LogInSuccess>(AppActions.LOGIN_SUCCESS),
+  loginSuccess$ = createEffect(
+    () => this.actions$.pipe(
+      ofType(AppActions.logInSuccess),
       mergeMap(
-        (authorization) => this.authorizationService.getUserInfo(authorization.payload)
+        (input) => this.authorizationService.getUserInfo(input.authorization)
           .pipe(
             map((data) => {
               this.router.navigate(['courses']);
-              return new AppActions.GetUserSuccess(data);
+              return AppActions.getUserSuccess({user: data});
             }),
-            catchError(error => of(new AppActions.GetUserFailure(error)))
+            catchError(error => of(AppActions.getUserFailure({error})))
           )
       ),
-    );
+    )
+  );
 
-  @Effect() getUser$ = this.actions$
-    .pipe(
-      ofType<AppActions.GetUser>(AppActions.GET_USER),
+  getUser$ = createEffect(
+    () => this.actions$.pipe(
+      ofType(AppActions.getUser),
       mergeMap(
-        (loginInfo) => this.authorizationService.getUserInfo(loginInfo.payload)
+        (input) => this.authorizationService.getUserInfo(input.authorization)
           .pipe(
             map((data: UserEntity) => {
-              return new AppActions.GetUserSuccess(data);
+              return AppActions.getUserSuccess({user: data});
             }),
-            catchError(error => of(new AppActions.GetUserFailure(error)))
+            catchError(error => of(AppActions.getUserFailure({error})))
           )
       ),
-    );
+    )
+  );
 
   loadCourses$ = createEffect(
     () => this.actions$.pipe(
@@ -63,67 +66,71 @@ export class AppEffects {
                 map((data) => {
                   return AppActions.getCoursesSuccess({courses: data});
                 }),
-                catchError(error => of(new AppActions.GetCoursesFailure(error)))
+                catchError(error => of(AppActions.getCoursesFailure({error})))
               )
         ),
       )
-);
+  );
 
-  @Effect() loadCoursesString$ = this.actions$
-    .pipe(
-      ofType<AppActions.GetStringCourses>(AppActions.GET_COURSES_BY_STRING),
+  loadCoursesString$ = createEffect(
+    () => this.actions$.pipe(
+      ofType(AppActions.getStringCourses),
       mergeMap(
-        (query) => this.coursesService.retrieveListByString(query.payload)
+        (input) => this.coursesService.retrieveListByString(input.query)
           .pipe(
             map((data) => {
-              return new AppActions.GetStringCoursesSuccess(data);
+              return AppActions.getStringCoursesSuccess({courses: data});
             }),
-            catchError(error => of(new AppActions.GetStringCoursesFailure(error)))
+            catchError(error => of(AppActions.getStringCoursesFailure({error})))
           )
       ),
-    );
+    )
+  );
 
-  @Effect() deleteCourse$ = this.actions$
-    .pipe(
-      ofType<AppActions.DeleteCourse>(AppActions.DELETE_COURSE_BY_ID),
+  deleteCourse$ = createEffect(
+    () => this.actions$.pipe(
+      ofType(AppActions.deleteCourse),
       mergeMap(
-        (id) => this.coursesService.removeItem(id.payload)
+        (input) => this.coursesService.removeItem(input.id)
           .pipe(
             map(() => {
-              return new AppActions.DeleteCourseSuccess(id.payload);
+              return AppActions.deleteCourseSuccess({id: input.id});
             }),
-            catchError(error => of(new AppActions.DeleteCourseFailure(error)))
+            catchError(error => of(AppActions.deleteCourseFailure({error})))
           )
       ),
-    );
+    )
+  );
 
-  @Effect() editCourse$ = this.actions$
-    .pipe(
-      ofType<AppActions.EditCourse>(AppActions.EDIT_COURSE_BY_ID),
+  editCourse$ = createEffect(
+    () => this.actions$.pipe(
+      ofType(AppActions.editCourse),
       mergeMap(
-        (course) => this.coursesService.upsertCourse(course.payload, false)
+        (input) => this.coursesService.upsertCourse(input.course, false)
           .pipe(
             map((newCourse) => {
-              return new AppActions.EditCourseSuccess(newCourse);
+              return AppActions.editCourseSuccess({course: newCourse});
             }),
-            catchError(error => of(new AppActions.EditCourseFailure(error)))
+            catchError(error => of(AppActions.editCourseFailure({error})))
           )
       ),
-    );
+    )
+  );
 
-  @Effect() addCourse$ = this.actions$
-    .pipe(
-      ofType<AppActions.AddCourse>(AppActions.ADD_COURSE),
+  addCourse$ = createEffect(
+    () => this.actions$.pipe(
+      ofType(AppActions.addCourse),
       mergeMap(
-        (course) => this.coursesService.upsertCourse(course.payload, true)
+        (input) => this.coursesService.upsertCourse(input.course, true)
           .pipe(
             map(() => {
-              return new AppActions.AddCourseSuccess();
+              return AppActions.addCourseSuccess({});
             }),
-            catchError(error => of(new AppActions.AddCourseFailure(error)))
+            catchError(error => of(AppActions.addCourseFailure({error})))
           )
       ),
-    );
+    )
+  );
 
   constructor(
     private actions$: Actions,

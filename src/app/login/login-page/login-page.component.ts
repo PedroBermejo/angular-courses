@@ -23,7 +23,7 @@ export class LoginPageComponent {
         login: form.value.email,
         password: form.value.password
       };
-      this.store.dispatch(new AppActions.LogIn(login));
+      this.store.dispatch(AppActions.logIn({login: login}));
     }
   }
 

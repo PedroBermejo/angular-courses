@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import { AuthorizationService } from '../../../services/authorization.service';
 import { Router } from '@angular/router';
-import {UserEntity} from '../../../interfaces/user-entity';
+import {LoginInfo, UserEntity} from '../../../interfaces/user-entity';
 import {Store} from '@ngrx/store';
 import {AppState} from '../../../store/app.state';
 import * as AppActions from '../../../store/app.actions';
@@ -23,8 +23,8 @@ export class HeaderComponent {
   ) { }
 
   logOff() {
-    this.store.dispatch(new AppActions.GetUser(undefined));
-    this.store.dispatch(new AppActions.LogIn(undefined));
+    this.store.dispatch(AppActions.getUser({ authorization: undefined }));
+    this.store.dispatch(AppActions.logIn({ login: undefined }));
     this.router.navigate(['login'], {});
   }
 

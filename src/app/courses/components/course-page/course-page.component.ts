@@ -1,8 +1,8 @@
-import {AfterViewInit, Component, OnDestroy, OnInit, ViewChild, ViewContainerRef} from '@angular/core';
+import {AfterViewInit, Component, OnDestroy, ViewChild, ViewContainerRef} from '@angular/core';
 import {CoursesService} from '../../../services/courses.service';
 import {Course} from '../../../interfaces/course';
-import {fromEvent, Observable, of, Subject, Subscription} from 'rxjs';
-import {distinctUntilChanged, filter, finalize, map, switchMap, takeUntil, throttleTime} from 'rxjs/operators';
+import {fromEvent, Observable, of, Subject} from 'rxjs';
+import {distinctUntilChanged, map, switchMap, takeUntil, throttleTime} from 'rxjs/operators';
 import {LoadingService} from '../../../services/loading.service';
 import {Store} from '@ngrx/store';
 import {AppState} from '../../../store/app.state';
@@ -39,7 +39,7 @@ export class CoursePageComponent implements AfterViewInit, OnDestroy {
       switchMap( (input: string) => {
         if (input.length > 2) {
           this.showLoadMore = false;
-          this.store.dispatch(new AppActions.GetStringCourses(input));
+          this.store.dispatch(AppActions.getStringCourses({query: input}));
         } else {
           this.showLoadMore = true;
           this.store.dispatch(AppActions.getCourses({ count: 4 }));
@@ -55,7 +55,7 @@ export class CoursePageComponent implements AfterViewInit, OnDestroy {
   }
 
   delete(event) {
-    this.store.dispatch(new AppActions.DeleteCourse(event.id));
+    this.store.dispatch(AppActions.deleteCourse({id: event.id}));
   }
 
   loadMore(count: number) {
