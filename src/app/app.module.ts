@@ -12,7 +12,7 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { environment } from '../environments/environment';
 import { EffectsModule } from '@ngrx/effects';
 import { AppEffects } from './store/app.effects';
-import {coursesReducer} from './store/app.reducers';
+import * as appReducers from './store/app.reducers';
 
 
 @NgModule({
@@ -27,7 +27,7 @@ import {coursesReducer} from './store/app.reducers';
     CoursesModule,
     HttpClientModule,
     StoreModule.forRoot( {
-      courses: coursesReducer
+      courses: appReducers.reducer
     }),
     EffectsModule.forRoot([AppEffects]),
     !environment.production ? StoreDevtoolsModule.instrument() : []
