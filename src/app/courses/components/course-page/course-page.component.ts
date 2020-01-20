@@ -13,9 +13,8 @@ import * as AppActions from './../../../store/app.actions';
   templateUrl: './course-page.component.html',
   styleUrls: ['./course-page.component.css']
 })
-export class CoursePageComponent implements OnInit, AfterViewInit, OnDestroy {
-  courses$: Observable<Course[]>;
-  search$: Subscription;
+export class CoursePageComponent implements AfterViewInit, OnDestroy {
+  courses$: Observable<Course[]> = this.store.select( store => store.courses.courses);
   showLoadMore = true;
   destroy$: Subject<boolean> = new Subject<boolean>();
   @ViewChild('inputChild', {read: ViewContainerRef, static: false}) inputChild: ViewContainerRef;
@@ -23,14 +22,11 @@ export class CoursePageComponent implements OnInit, AfterViewInit, OnDestroy {
   constructor(
     private coursesService: CoursesService,
     private loadingService: LoadingService,
-    private store: Store<AppState>) {  }
-
-  ngOnInit() {
-    this.courses$ = this.store.select( store => store.courses.courses);
-    this.store.select(store => store.courses.loading).subscribe(
+    private store: Store<AppState>) {
+    this.store.select(storeData => storeData.courses.loading).subscribe(
       data => this.loadingService.togleLoading(data)
     );
-    this.store.dispatch(new AppActions.GetCourses(4));
+    this.store.dispatch(AppActions.getCourses({ count: 4 }));
   }
 
   ngAfterViewInit() {
@@ -46,7 +42,7 @@ export class CoursePageComponent implements OnInit, AfterViewInit, OnDestroy {
           this.store.dispatch(new AppActions.GetStringCourses(input));
         } else {
           this.showLoadMore = true;
-          this.store.dispatch(new AppActions.GetCourses(4));
+          this.store.dispatch(AppActions.getCourses({ count: 4 }));
         }
         return of({});
       })
@@ -63,7 +59,7 @@ export class CoursePageComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   loadMore(count: number) {
-    this.store.dispatch(new AppActions.GetCourses(count + 4));
+    this.store.dispatch(AppActions.getCourses({ count: count + 4 }));
   }
 
 }

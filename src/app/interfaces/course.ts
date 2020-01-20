@@ -1,4 +1,4 @@
-import {UserEntity} from './user-entity';
+import {Authorization, UserEntity} from './user-entity';
 
 export interface Course {
   id: number;
@@ -20,5 +20,6 @@ export interface CourseState {
   courses: Course[];
   loading: boolean;
   error: Error;
+  authorization: Authorization;
   user: UserEntity;
 }

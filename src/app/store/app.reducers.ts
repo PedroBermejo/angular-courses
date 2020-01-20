@@ -1,40 +1,56 @@
 import * as AppActions from './app.actions';
-import {Author, Course, CourseState} from '../interfaces/course';
+import {CourseState} from '../interfaces/course';
 
 const initialState: CourseState = {
   courses: [],
   loading: false,
   error: undefined,
-  user: undefined
+  user: undefined,
+  authorization: undefined
 };
 
-export function coursesReducer(state: CourseState = initialState, action: AppActions.Actions) {
+export function coursesReducer(state: CourseState = initialState, action: AppActions) {
 
   switch (action.type) {
-    case AppActions.AUTHORIZATION:
+    case AppActions.LOGIN:
       return {
         ...state,
       };
-    case AppActions.AUTHORIZATION_SUCCESS:
+    case AppActions.LOGIN_SUCCESS:
+      return {
+        ...state,
+        authorization: action.payload,
+      };
+    case AppActions.LOGIN_FAILURE:
+      return {
+        ...state,
+        authorization: undefined,
+        error: action.payload,
+      };
+    case AppActions.GET_USER:
+      return {
+        ...state,
+      };
+    case AppActions.GET_USER_SUCCESS:
       return {
         ...state,
         user: action.payload,
       };
-    case AppActions.AUTHORIZATION_FAILURE:
+    case AppActions.GET_USER_FAILURE:
       return {
         ...state,
         user: undefined,
         error: action.payload,
       };
-    case AppActions.GET_COURSES_BY_COUNT:
+    case AppActions.getCourses.type:
       return {
         ...state,
         loading: true
       };
-    case AppActions.GET_COURSES_BY_COUNT_SUCCESS:
+    case AppActions.getCoursesSuccess.type:
       return {
         ...state,
-        courses: action.payload,
+        courses: action.courses,
         loading: false
       };
     case AppActions.GET_COURSES_BY_COUNT_FAILURE:
@@ -85,6 +101,8 @@ export function coursesReducer(state: CourseState = initialState, action: AppAct
     case AppActions.EDIT_COURSE_BY_ID_SUCCESS:
       return {
         ...state,
+        courses: state.courses.map(item =>
+          item.id === action.payload.id ? action.payload : item),
         loading: false
       };
     case AppActions.EDIT_COURSE_BY_ID_FAILURE:

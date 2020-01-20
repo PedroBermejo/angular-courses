@@ -6,7 +6,7 @@
     <a [routerLink]="'login'" class="log-text">User login</a>
     <a [routerLink]="''" (click)="logOff()" class="log-text">Log off</a>
   </div>
-  <div *ngIf="userInfo" class="user-info">
+  <div *ngIf="userInfo$ | async; let userInfo" class="user-info">
     <span>{{userInfo.name.first}}</span><br>
     <span>{{userInfo.name.last}}</span>
   </div>

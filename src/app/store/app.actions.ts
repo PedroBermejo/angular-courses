@@ -1,9 +1,8 @@
-import { Action } from '@ngrx/store';
+import {Action, createAction, props} from '@ngrx/store';
 import {Course} from '../interfaces/course';
-import {LoginInfo, UserEntity} from '../interfaces/user-entity';
+import {Authorization, LoginInfo, UserEntity} from '../interfaces/user-entity';
 
-export const GET_COURSES_BY_COUNT = '[COURSES] Get';
-export const GET_COURSES_BY_COUNT_SUCCESS = '[COURSES] Get Success';
+export const GET_COURSES_BY_COUNT_SUCCESS = '';
 export const GET_COURSES_BY_COUNT_FAILURE = '[COURSES] Get Failure';
 
 export const GET_COURSES_BY_STRING = '[COURSES] Get by String';
@@ -22,19 +21,23 @@ export const ADD_COURSE = '[COURSES] Add';
 export const ADD_COURSE_SUCCESS = '[COURSES] Add Success';
 export const ADD_COURSE_FAILURE = '[COURSES] Add Failure';
 
-export const AUTHORIZATION = '[COURSES] Authorization';
-export const AUTHORIZATION_SUCCESS = '[COURSES] Authorization Success';
-export const AUTHORIZATION_FAILURE = '[COURSES] Authorization Failure';
+export const LOGIN = '[COURSES] Login';
+export const LOGIN_SUCCESS = '[COURSES] Login Success';
+export const LOGIN_FAILURE = '[COURSES] Login Failure';
 
-export class GetCourses implements Action {
-  readonly type = GET_COURSES_BY_COUNT;
-  constructor(public payload: number) {}
-}
+export const GET_USER = '[COURSES] Get User';
+export const GET_USER_SUCCESS = '[COURSES] Get User Success';
+export const GET_USER_FAILURE = '[COURSES] Get User Failure';
 
-export class GetCoursesSuccess implements Action {
-  readonly type = GET_COURSES_BY_COUNT_SUCCESS;
-  constructor(public payload: Course[]) {}
-}
+export const getCourses = createAction(
+  '[COURSES] Get',
+  props<{ count: number }>()
+);
+
+export const getCoursesSuccess = createAction(
+  '[COURSES] Get Success',
+  props<{ courses: Course[] }>()
+);
 
 export class GetCoursesFailure implements Action {
   readonly type = GET_COURSES_BY_COUNT_FAILURE;
@@ -78,6 +81,7 @@ export class EditCourse implements Action {
 
 export class EditCourseSuccess implements Action {
   readonly type = EDIT_COURSE_BY_ID_SUCCESS;
+  constructor(public payload: Course) {}
 }
 
 export class EditCourseFailure implements Action {
@@ -99,36 +103,33 @@ export class AddCourseFailure implements Action {
   constructor(public payload: Error) {}
 }
 
-export class Authorization implements Action {
-  readonly type = AUTHORIZATION;
+export class LogIn implements Action {
+  readonly type = LOGIN;
   constructor(public payload: LoginInfo) {}
 }
 
-export class AuthorizationSuccess implements Action {
-  readonly type = AUTHORIZATION_SUCCESS;
-  constructor(public payload: UserEntity, ) {}
+export class LogInSuccess implements Action {
+  readonly type = LOGIN_SUCCESS;
+  constructor(public payload: Authorization) {}
 }
 
-export class AuthorizationFailure implements Action {
-  readonly type = AUTHORIZATION_FAILURE;
+export class LogInFailure implements Action {
+  readonly type = LOGIN_FAILURE;
   constructor(public payload: Error) {}
 }
 
-export type Actions = GetCourses |
-  GetCoursesSuccess |
-  GetCoursesFailure |
-  DeleteCourse |
-  DeleteCourseSuccess |
-  DeleteCourseFailure |
-  EditCourse |
-  EditCourseSuccess |
-  EditCourseFailure |
-  AddCourse |
-  AddCourseSuccess |
-  AddCourseFailure |
-  GetStringCourses |
-  GetStringCoursesSuccess |
-  GetStringCoursesFailure |
-  Authorization |
-  AuthorizationSuccess |
-  AuthorizationFailure;
+export class GetUser implements Action {
+  readonly type = GET_USER;
+  constructor(public payload: Authorization) {}
+}
+
+export class GetUserSuccess implements Action {
+  readonly type = GET_USER_SUCCESS;
+  constructor(public payload: UserEntity) {}
+}
+
+export class GetUserFailure implements Action {
+  readonly type = GET_USER_FAILURE;
+  constructor(public payload: Error) {
+  }
+}

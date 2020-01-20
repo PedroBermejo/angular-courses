@@ -1,43 +1,73 @@
 import { Injectable } from '@angular/core';
-import { Actions, Effect, ofType } from '@ngrx/effects';
-import { map, mergeMap, catchError } from 'rxjs/operators';
+import {Actions, createEffect, Effect, ofType} from '@ngrx/effects';
+import {map, mergeMap, catchError, concatMap, switchMap} from 'rxjs/operators';
 import * as AppActions from './app.actions';
 import { of } from 'rxjs';
 import {CoursesService} from '../services/courses.service';
 import {AuthorizationService} from '../services/authorization.service';
 import {Router} from '@angular/router';
+import {UserEntity} from '../interfaces/user-entity';
 
 @Injectable()
 export class AppEffects {
 
-  @Effect() authorization$ = this.actions$
+  @Effect() login$ = this.actions$
     .pipe(
-      ofType<AppActions.Authorization>(AppActions.AUTHORIZATION),
+      ofType<AppActions.LogIn>(AppActions.LOGIN),
       mergeMap(
         (loginInfo) => this.authorizationService.logIn(loginInfo.payload)
           .pipe(
             map((data) => {
-              this.router.navigate(['courses']);
-              return new AppActions.AuthorizationSuccess(data);
+              return new AppActions.LogInSuccess(data);
             }),
-            catchError(error => of(new AppActions.AuthorizationFailure(error)))
+            catchError(error => of(new AppActions.LogInFailure(error)))
           )
       ),
     );
 
-  @Effect() loadCourses$ = this.actions$
+  @Effect() loginSuccess$ = this.actions$
     .pipe(
-      ofType<AppActions.GetCourses>(AppActions.GET_COURSES_BY_COUNT),
+      ofType<AppActions.LogInSuccess>(AppActions.LOGIN_SUCCESS),
       mergeMap(
-        (count) => this.coursesService.retrieveListByCount(count.payload)
-            .pipe(
-              map((data) => {
-                return new AppActions.GetCoursesSuccess(data);
-              }),
-              catchError(error => of(new AppActions.GetCoursesFailure(error)))
-            )
+        (authorization) => this.authorizationService.getUserInfo(authorization.payload)
+          .pipe(
+            map((data) => {
+              this.router.navigate(['courses']);
+              return new AppActions.GetUserSuccess(data);
+            }),
+            catchError(error => of(new AppActions.GetUserFailure(error)))
+          )
       ),
     );
+
+  @Effect() getUser$ = this.actions$
+    .pipe(
+      ofType<AppActions.GetUser>(AppActions.GET_USER),
+      mergeMap(
+        (loginInfo) => this.authorizationService.getUserInfo(loginInfo.payload)
+          .pipe(
+            map((data: UserEntity) => {
+              return new AppActions.GetUserSuccess(data);
+            }),
+            catchError(error => of(new AppActions.GetUserFailure(error)))
+          )
+      ),
+    );
+
+  loadCourses$ = createEffect(
+    () => this.actions$.pipe(
+        ofType(AppActions.getCourses),
+        mergeMap(
+          (input) => this.coursesService.retrieveListByCount(input.count)
+              .pipe(
+                map((data) => {
+                  return AppActions.getCoursesSuccess({courses: data});
+                }),
+                catchError(error => of(new AppActions.GetCoursesFailure(error)))
+              )
+        ),
+      )
+);
 
   @Effect() loadCoursesString$ = this.actions$
     .pipe(
@@ -73,8 +103,8 @@ export class AppEffects {
       mergeMap(
         (course) => this.coursesService.upsertCourse(course.payload, false)
           .pipe(
-            map(() => {
-              return new AppActions.EditCourseSuccess();
+            map((newCourse) => {
+              return new AppActions.EditCourseSuccess(newCourse);
             }),
             catchError(error => of(new AppActions.EditCourseFailure(error)))
           )

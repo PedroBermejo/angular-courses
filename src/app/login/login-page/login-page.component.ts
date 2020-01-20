@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component} from '@angular/core';
 import { LoginInfo } from '../../interfaces/user-entity';
 import { AuthorizationService } from '../../services/authorization.service';
 import {Store} from '@ngrx/store';
@@ -10,20 +10,12 @@ import * as AppActions from '../../store/app.actions';
   templateUrl: './login-page.component.html',
   styleUrls: ['./login-page.component.css']
 })
-export class LoginPageComponent implements OnInit {
+export class LoginPageComponent {
 
   constructor(
     private authorizationService: AuthorizationService,
     private store: Store<AppState>
   ) { }
-
-  ngOnInit() {
-    this.store.select(store => store.courses.user).subscribe(data => {
-      if (data) {
-        window.localStorage.setItem('authorization', JSON.stringify(data));
-      }
-    });
-  }
 
   logIn(form) {
     if (form.valid) {
@@ -31,7 +23,7 @@ export class LoginPageComponent implements OnInit {
         login: form.value.email,
         password: form.value.password
       };
-      this.store.dispatch(new AppActions.Authorization(login));
+      this.store.dispatch(new AppActions.LogIn(login));
     }
   }
 
