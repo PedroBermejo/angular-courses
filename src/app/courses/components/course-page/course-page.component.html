@@ -2,7 +2,7 @@
 <div class="course-container" >
   <app-search #inputChild></app-search>
   <app-add></app-add>
-  <div class="course-items-container">
+  <div class="course-items-container" *ngIf="courses$ | async; let courses;">
     <li *ngFor="let item of courses | sortBy: 'creationDate'">
       <app-course-item  [courseItem]="item" (deleteCourseItem)="delete($event)"></app-course-item>
     </li>
@@ -11,7 +11,7 @@
     </li>
     <li>
       <div *ngIf="showLoadMore">
-        <a [routerLink]="" (click)="loadMore()">LOAD MORE...</a>
+        <a [routerLink]="" (click)="loadMore(courses.length)">LOAD MORE...</a>
       </div>
     </li>
   </div>

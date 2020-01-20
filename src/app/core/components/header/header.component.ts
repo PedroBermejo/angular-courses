@@ -1,39 +1,30 @@
 import {Component, OnInit} from '@angular/core';
 import { AuthorizationService } from '../../../services/authorization.service';
 import { Router } from '@angular/router';
-import {UserEntity} from '../../../interfaces/user-entity';
-
+import {LoginInfo, UserEntity} from '../../../interfaces/user-entity';
+import {Store} from '@ngrx/store';
+import {AppState} from '../../../store/app.state';
+import * as AppActions from '../../../store/app.actions';
+import {Observable} from 'rxjs';
 
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.css']
 })
-export class HeaderComponent implements OnInit {
+export class HeaderComponent {
 
-  userInfo: UserEntity;
+  userInfo$: Observable<UserEntity> = this.store.select(store => store.courses.user);
 
   constructor(
     private router: Router,
-    private authorizationService: AuthorizationService
+    private authorizationService: AuthorizationService,
+    private store: Store<AppState>
   ) { }
 
-  ngOnInit() {
-    this.authorizationService.getSubject().subscribe(data => {
-      if (data) {
-        data.subscribe( user => {
-          console.log(user);
-          if (user) {
-            this.userInfo = user as UserEntity;
-          }
-        });
-      }
-    });
-  }
-
   logOff() {
-    this.authorizationService.logOut();
-    this.userInfo = undefined;
+    this.store.dispatch(AppActions.getUser({ authorization: undefined }));
+    this.store.dispatch(AppActions.logIn({ login: undefined }));
     this.router.navigate(['login'], {});
   }
 

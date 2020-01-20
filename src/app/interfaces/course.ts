@@ -1,3 +1,5 @@
+import {Authorization, UserEntity} from './user-entity';
+
 export interface Course {
   id: number;
   name: string;
@@ -12,4 +14,12 @@ export interface Author {
   id: number;
   name: string;
   lastName: string;
+}
+
+export interface CourseState {
+  courses: Course[];
+  loading: boolean;
+  error: Error;
+  authorization: Authorization;
+  user: UserEntity;
 }

@@ -1,9 +1,9 @@
-import { Component } from '@angular/core';
+import {Component} from '@angular/core';
 import { LoginInfo } from '../../interfaces/user-entity';
 import { AuthorizationService } from '../../services/authorization.service';
-import { Router } from '@angular/router';
-import {LoadingService} from '../../services/loading.service';
-import {catchError, finalize} from 'rxjs/operators';
+import {Store} from '@ngrx/store';
+import {AppState} from '../../store/app.state';
+import * as AppActions from '../../store/app.actions';
 
 @Component({
   selector: 'app-login-page',
@@ -13,9 +13,8 @@ import {catchError, finalize} from 'rxjs/operators';
 export class LoginPageComponent {
 
   constructor(
-    private router: Router,
     private authorizationService: AuthorizationService,
-    private loadingService: LoadingService
+    private store: Store<AppState>
   ) { }
 
   logIn(form) {
@@ -24,16 +23,7 @@ export class LoginPageComponent {
         login: form.value.email,
         password: form.value.password
       };
-      this.loadingService.togleLoading(true);
-      this.authorizationService.logIn(login).pipe(
-        finalize(() => this.loadingService.togleLoading(false))
-      ).subscribe(data => {
-        if (data) {
-          window.localStorage.setItem('authorization', JSON.stringify(data));
-          this.router.navigate(['courses']);
-        }
-
-      });
+      this.store.dispatch(AppActions.logIn({login: login}));
     }
   }
 

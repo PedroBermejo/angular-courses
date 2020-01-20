@@ -7,6 +7,12 @@ import {LoginModule} from './login/login.module';
 import {AppRoutingModule} from './app-routing.module';
 import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import {AuthInterceptorService} from './services/auth-interceptor.service';
+import { StoreModule } from '@ngrx/store';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { environment } from '../environments/environment';
+import { EffectsModule } from '@ngrx/effects';
+import { AppEffects } from './store/app.effects';
+import * as appReducers from './store/app.reducers';
 
 
 @NgModule({
@@ -19,7 +25,12 @@ import {AuthInterceptorService} from './services/auth-interceptor.service';
     LoginModule,
     AppRoutingModule,
     CoursesModule,
-    HttpClientModule
+    HttpClientModule,
+    StoreModule.forRoot( {
+      courses: appReducers.reducer
+    }),
+    EffectsModule.forRoot([AppEffects]),
+    !environment.production ? StoreDevtoolsModule.instrument() : []
   ],
   providers: [{
     provide: HTTP_INTERCEPTORS,

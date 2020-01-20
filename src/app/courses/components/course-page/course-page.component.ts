@@ -1,60 +1,52 @@
-import {AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild, ViewContainerRef} from '@angular/core';
+import {AfterViewInit, Component, OnDestroy, ViewChild, ViewContainerRef} from '@angular/core';
 import {CoursesService} from '../../../services/courses.service';
 import {Course} from '../../../interfaces/course';
-import {fromEvent, Observable, Subject, Subscription} from 'rxjs';
-import {SearchComponent} from '../search/search.component';
-import {distinctUntilChanged, filter, finalize, map, switchMap, takeUntil, throttleTime} from 'rxjs/operators';
+import {fromEvent, Observable, of, Subject} from 'rxjs';
+import {distinctUntilChanged, map, switchMap, takeUntil, throttleTime} from 'rxjs/operators';
 import {LoadingService} from '../../../services/loading.service';
+import {Store} from '@ngrx/store';
+import {AppState} from '../../../store/app.state';
+import * as AppActions from './../../../store/app.actions';
 
 @Component({
   selector: 'app-course-page',
   templateUrl: './course-page.component.html',
   styleUrls: ['./course-page.component.css']
 })
-export class CoursePageComponent implements OnInit, AfterViewInit, OnDestroy {
-  courses: Course[];
-  courses$: Observable<Course[]>;
-  search$: Subscription;
+export class CoursePageComponent implements AfterViewInit, OnDestroy {
+  courses$: Observable<Course[]> = this.store.select( store => store.courses.courses);
   showLoadMore = true;
   destroy$: Subject<boolean> = new Subject<boolean>();
   @ViewChild('inputChild', {read: ViewContainerRef, static: false}) inputChild: ViewContainerRef;
 
   constructor(
     private coursesService: CoursesService,
-    private loadingService: LoadingService ) { }
-
-  ngOnInit() {
-    this.getCoursesListByCount(4);
+    private loadingService: LoadingService,
+    private store: Store<AppState>) {
+    this.store.select(storeData => storeData.courses.loading).subscribe(
+      data => this.loadingService.togleLoading(data)
+    );
+    this.store.dispatch(AppActions.getCourses({ count: 4 }));
   }
 
   ngAfterViewInit() {
     const inputText = this.inputChild.element.nativeElement.querySelector('.inner-text');
-    this.search$ = fromEvent(inputText, 'keyup').pipe(
+    fromEvent(inputText, 'keyup').pipe(
       takeUntil(this.destroy$),
       map(() => inputText.value),
-      filter(text => !!text),
       distinctUntilChanged(),
       throttleTime(200),
-      switchMap( input => {
+      switchMap( (input: string) => {
         if (input.length > 2) {
           this.showLoadMore = false;
-          this.loadingService.togleLoading(true);
-          return this.coursesService.retrieveListByString(input);
+          this.store.dispatch(AppActions.getStringCourses({query: input}));
         } else {
           this.showLoadMore = true;
-          return this.coursesService.retrieveListByCount(4);
+          this.store.dispatch(AppActions.getCourses({ count: 4 }));
         }
-      } )
-    ).subscribe( data => {
-      if (data) {
-        this.courses = data as Course[];
-      }
-      this.loadingService.togleLoading(false);
-      }, error => {
-      console.log(error);
-      this.loadingService.togleLoading(false);
-    }
-    );
+        return of({});
+      })
+    ).subscribe();
   }
 
   ngOnDestroy() {
@@ -63,27 +55,11 @@ export class CoursePageComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   delete(event) {
-    this.loadingService.togleLoading(true);
-    this.coursesService.removeItem(event.id).subscribe(() => {
-      this.getCoursesListByCount(4);
-      this.loadingService.togleLoading(false);
-    });
+    this.store.dispatch(AppActions.deleteCourse({id: event.id}));
   }
 
-  loadMore() {
-    const count = this.courses.length + 4;
-    this.getCoursesListByCount(count);
+  loadMore(count: number) {
+    this.store.dispatch(AppActions.getCourses({ count: count + 4 }));
   }
 
-  getCoursesListByCount(count: number) {
-    this.courses$ = this.coursesService.retrieveListByCount(count);
-    this.loadingService.togleLoading(true);
-    this.courses$.pipe(
-      finalize(() => this.loadingService.togleLoading(false))
-    ).subscribe(data => {
-      if (data) {
-        this.courses = data;
-      }
-    });
-  }
 }
