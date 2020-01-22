@@ -22,3 +22,6 @@
 .submit {
   margin-top: 20px;
 }
+.error-message {
+  color: red;
+}

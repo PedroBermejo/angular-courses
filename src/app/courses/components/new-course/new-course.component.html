@@ -1,21 +1,21 @@
 <app-breadcrumbs [courseName]="title"></app-breadcrumbs>
 <main class="main-container">
   <div class="new-course-page">
-    <div class="form">
+    <form class="form" #myform="ngForm" (ngSubmit)="addCourse(myform)">
       <span>Title:</span><br>
-      <input type="text" class="title" [(ngModel)]="title"  placeholder="Enter title">
+      <input type="text" class="title" name="name" [(ngModel)]="course.name"  placeholder="Enter title">
       <br>
       <span>Description:</span><br>
-      <textarea rows="4" cols="50" [(ngModel)]="description" class="description"></textarea>
+      <textarea rows="4" cols="50" name="description" [(ngModel)]="course.description" class="description"></textarea>
       <br>
       <span>Date:</span><br>
-      <app-date-input [date]="date" (dateChanged)="updateDate($event)"></app-date-input><br>
+      <app-date-input [date]="course.date" (dateChanged)="updateDate($event)"></app-date-input><br>
       <span>Duration:</span><br>
       <app-duration-input
-          [duration]="duration" (durationChanged)="updateDuration($event)">
+          [duration]="course.length" (durationChanged)="updateDuration($event)">
       </app-duration-input><br>
-      <button class="submit" (click)="addCourse()">Save</button>
+      <input type="submit" class="submit" value="Save" [disabled]="!myform.valid">
       <button (click)="cancelAdd()">Cancel</button>
-    </div>
+    </form>
   </div>
 </main>

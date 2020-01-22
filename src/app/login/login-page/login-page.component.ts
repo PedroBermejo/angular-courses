@@ -4,6 +4,7 @@ import { AuthorizationService } from '../../services/authorization.service';
 import {Store} from '@ngrx/store';
 import {AppState} from '../../store/app.state';
 import * as AppActions from '../../store/app.actions';
+import {FormGroup} from '@angular/forms';
 
 @Component({
   selector: 'app-login-page',
@@ -12,12 +13,14 @@ import * as AppActions from '../../store/app.actions';
 })
 export class LoginPageComponent {
 
+  loginError$ = this.store.select(store => store.courses.error);
+
   constructor(
     private authorizationService: AuthorizationService,
     private store: Store<AppState>
   ) { }
 
-  logIn(form) {
+  logIn(form: FormGroup) {
     if (form.valid) {
       const login: LoginInfo = {
         login: form.value.email,

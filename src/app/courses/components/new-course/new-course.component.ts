@@ -7,6 +7,7 @@ import {LoadingService} from '../../../services/loading.service';
 import {Store} from '@ngrx/store';
 import {AppState} from '../../../store/app.state';
 import * as AppActions from '../../../store/app.actions';
+import {FormGroup} from '@angular/forms';
 
 @Component({
   selector: 'app-new-course',
@@ -14,15 +15,8 @@ import * as AppActions from '../../../store/app.actions';
   styleUrls: ['./new-course.component.css']
 })
 export class NewCourseComponent implements OnInit {
-  id: number;
-  date: string;
-  duration: number;
-  title: string;
-  description: string;
-  topRated = false;
-  authors: Author;
-  courseItem$: Observable<Course>;
   isNewCourse = false;
+  course: Course;
 
   constructor(
     private coursesServiceService: CoursesService,
@@ -30,7 +24,7 @@ export class NewCourseComponent implements OnInit {
     private router: Router,
     private loadingService: LoadingService,
     private store: Store<AppState>
-  ) { }
+  ) {  }
 
   ngOnInit() {
     this.activeRoute.paramMap.subscribe(params => {
@@ -40,18 +34,27 @@ export class NewCourseComponent implements OnInit {
           courses => {
             const course = courses.find( item => item.id === id);
             if (course) {
-              this.id = course.id;
-              this.date = course.date;
-              this.duration = course.length;
-              this.title = course.name;
-              this.description = course.description;
-              this.topRated = course.isTopRated;
-              this.authors = course.authors;
+              this.course = course;
             }
           }
         );
+        console.log(this.course);
+
       } else {
         this.isNewCourse = true;
+        this.course = {
+          id: 0,
+          name: '',
+          date: '',
+          length: 0,
+          description: '',
+          isTopRated: false,
+          authors: {
+            id: 0,
+            lastName: '',
+            name: ''
+          }
+        };
         this.generateId();
       }
     });
@@ -61,21 +64,12 @@ export class NewCourseComponent implements OnInit {
   }
 
 
-  addCourse() {
-    if (this.title && this.description && this.duration && this.date) {
-      const course: Course = {
-        id: this.id,
-        name: this.title,
-        date: this.date,
-        length: +this.duration,
-        description: this.description,
-        isTopRated: this.topRated,
-        authors: this.authors
-      };
+  addCourse(form: FormGroup) {
+    if (form.valid) {
       if (this.isNewCourse) {
-        this.store.dispatch(AppActions.addCourse({course: course}));
+        this.store.dispatch(AppActions.addCourse({course: this.course}));
       } else {
-        this.store.dispatch(AppActions.editCourse({course: course}));
+        this.store.dispatch(AppActions.editCourse({course: this.course}));
       }
       this.router.navigate(['courses']);
     }
@@ -86,11 +80,11 @@ export class NewCourseComponent implements OnInit {
   }
 
   updateDate(event) {
-    this.date = event;
+    this.course.date = event;
   }
 
   updateDuration(event) {
-    this.duration = event;
+    this.course.length = +event;
   }
 
   generateId() {
@@ -100,7 +94,7 @@ export class NewCourseComponent implements OnInit {
         this.generateId();
         }, error => {
         if (error.status === 404) {
-          this.id = id;
+          this.course.id = id;
         }
     });
   }
