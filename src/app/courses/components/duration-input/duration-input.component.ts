@@ -23,10 +23,9 @@ export class DurationInputComponent implements ControlValueAccessor {
   registerOnTouched(fn: any): void {
     this.onTouched = fn;
   }
+
   writeValue(value: number): void {
     this.value = value;
   }
-
-
 
 }

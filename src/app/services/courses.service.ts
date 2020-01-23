@@ -13,6 +13,9 @@ export class CoursesService {
   readonly URL_COURSES = Location.joinWithSlash(
     globalConstants.endpoints.domain, globalConstants.endpoints.courses);
 
+  readonly URL_AUTHORS = Location.joinWithSlash(
+    globalConstants.endpoints.domain, globalConstants.endpoints.authors);
+
   constructor(private httpClient: HttpClient) {}
 
   retrieveListByCount(count: number): Observable<any> {
@@ -47,6 +50,10 @@ export class CoursesService {
   removeItem(idRemove: number): Observable<any> {
     return this.httpClient.delete(Location.joinWithSlash(this.URL_COURSES,
       idRemove.toString()));
+  }
+
+  retrieveAuthors(): Observable<any> {
+    return this.httpClient.get(`${this.URL_AUTHORS}`);
   }
 
 }

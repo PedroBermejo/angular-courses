@@ -6,7 +6,7 @@ export interface Course {
   description: string;
   isTopRated: boolean;
   date: string;
-  authors: Author;
+  authors: Author[];
   length: number;
 }
 
@@ -18,8 +18,14 @@ export interface Author {
 
 export interface CourseState {
   courses: Course[];
+  authors: Author[];
   loading: boolean;
   error: Error;
   authorization: Authorization;
   user: UserEntity;
+}
+
+export interface Tag {
+  display: string;
+  value: number;
 }

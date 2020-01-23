@@ -134,6 +134,21 @@ export class AppEffects {
     )
   );
 
+  getAuthors$ = createEffect(
+    () => this.actions$.pipe(
+      ofType(AppActions.getAuthors),
+      mergeMap(
+        () => this.coursesService.retrieveAuthors()
+          .pipe(
+            map((authors) => {
+              return AppActions.getAuthorsSuccess({authors});
+            }),
+            catchError(error => of(AppActions.getAuthorsFailure({error})))
+          )
+      ),
+    )
+  );
+
   constructor(
     private actions$: Actions,
     private coursesService: CoursesService,

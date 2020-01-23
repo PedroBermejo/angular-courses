@@ -104,6 +104,20 @@ export const coursesReducer = createReducer(
     ...state,
     error,
     loading: false
+  })),
+  on(AppActions.getAuthors, (state) => ({
+    ...state,
+    loading: true
+  })),
+  on(AppActions.getAuthorsSuccess, (state, {authors}) => ({
+    ...state,
+    authors,
+    loading: false
+  })),
+  on(AppActions.getAuthorsFailure, (state, {error}) => ({
+    ...state,
+    error,
+    loading: false
   }))
 );
 

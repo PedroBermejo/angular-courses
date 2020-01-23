@@ -20,7 +20,6 @@ export class NewCourseComponent implements OnInit, AfterViewInit {
   form: FormGroup;
   id: number;
   isTopRated = false;
-  authors: Author;
   @ViewChild('dateChild', {read: ElementRef, static: false}) dateChild: ElementRef;
   @ViewChild('lengthChild', {read: ElementRef, static: false}) lengthChild: ElementRef;
 
@@ -36,7 +35,8 @@ export class NewCourseComponent implements OnInit, AfterViewInit {
       name: [ '', Validators.compose([Validators.maxLength(50), Validators.required])],
       date: [ '', Validators.compose([DateValidators.germanDate, Validators.required]) ],
       length: [ 0, Validators.compose([Validators.pattern('^[0-9]*$'), Validators.required]) ],
-      description: [ '', Validators.compose([Validators.maxLength(500), Validators.required])]
+      description: [ '', Validators.compose([Validators.maxLength(500), Validators.required])],
+      authors: [ [], Validators.compose( [Validators.required])]
     });
   }
 
@@ -50,12 +50,12 @@ export class NewCourseComponent implements OnInit, AfterViewInit {
             if (course) {
               this.id = course.id;
               this.isTopRated = course.isTopRated;
-              this.authors = course.authors;
               this.form.patchValue({
                 name: course.name,
                 date: course.date,
                 length: course.length,
-                description: course.description
+                description: course.description,
+                authors: course.authors
               });
             }
           }
@@ -90,6 +90,7 @@ export class NewCourseComponent implements OnInit, AfterViewInit {
   addCourse(form: FormGroup) {
     if (form.valid) {
       const formValue = this.form.value;
+      console.log(formValue.authors);
       const course: Course = {
         id: +this.id,
         name: formValue.name,
@@ -97,7 +98,7 @@ export class NewCourseComponent implements OnInit, AfterViewInit {
         length: +formValue.length,
         description: formValue.description,
         isTopRated: this.isTopRated,
-        authors: this.authors
+        authors: formValue.authors
       }
       if (this.isNewCourse) {
         this.store.dispatch(AppActions.addCourse({course: course}));

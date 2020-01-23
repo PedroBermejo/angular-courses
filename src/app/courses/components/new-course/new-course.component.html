@@ -2,6 +2,7 @@
 <main class="main-container">
   <div class="new-course-page">
     <form class="form" [formGroup]="form" (ngSubmit)="addCourse(form)">
+
       <span>Title:</span>
       <span *ngIf="form.get('name').touched && form.get('name').hasError('required')"
             class="required-input"> This field is required</span>
@@ -11,6 +12,7 @@
            form.get('name').hasError('required') || form.get('name').hasError('maxlength')"
            type="text" class="title" formControlName="name"  placeholder="Enter title">
       <br>
+
       <span>Description:</span>
       <span *ngIf="form.get('description').touched && form.get('description').hasError('required')"
             class="required-input"> This field is required</span>
@@ -20,12 +22,14 @@
            form.get('description').hasError('required') || form.get('description').hasError('maxlength')"
            rows="4" cols="50" formControlName="description" class="description"></textarea>
       <br>
+
       <span>Date:</span>
       <span *ngIf="form.get('date').touched && form.get('date').hasError('required')"
             class="required-input"> This field is required</span>
       <span *ngIf="form.get('date').value && form.get('date').hasError('germanDate')"
             class="required-input"> Date should be in format dd/MM/yyyy</span><br>
       <app-date-input #dateChild formControlName="date"></app-date-input><br>
+
       <span>Duration:</span>
       <span *ngIf="form.get('length').touched && form.get('length').hasError('required')"
             class="required-input"> This field is required</span>
@@ -34,8 +38,13 @@
       <app-duration-input #lengthChild formControlName="length">
       </app-duration-input>
       <span class="duration">{{form.get('length').value | timeFormat}}</span><br>
+
+      <span>Authors:</span>
+      <app-author-input formControlName="authors"></app-author-input>
+
       <input type="submit" class="submit" value="Save" [disabled]="!form.valid">
       <button (click)="cancelAdd()">Cancel</button>
+
     </form>
   </div>
 </main>

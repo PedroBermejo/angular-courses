@@ -1,0 +1,12 @@
+<div>
+  <tag-input [(ngModel)]="initialTags"
+             [secondaryPlaceholder]="'Enter a new Author'"
+             (onAdd)="onTagAdd($event)"
+             (onRemove)="onTagRemove($event)">
+    <tag-input-dropdown
+      [autocompleteItems]="tags"
+      [showDropdownIfEmpty]="true"
+      [dynamicUpdate]="false">
+    </tag-input-dropdown>
+  </tag-input>
+</div>

@@ -1,5 +1,5 @@
 import {createAction, props} from '@ngrx/store';
-import {Course} from '../interfaces/course';
+import {Author, Course} from '../interfaces/course';
 import {Authorization, LoginInfo, UserEntity} from '../interfaces/user-entity';
 
 export const getCourses = createAction(
@@ -107,3 +107,17 @@ export const getUserFailure = createAction(
   props<{ error: Error }>()
 );
 
+export const getAuthors = createAction(
+  '[COURSES] Get Authors',
+  props<{ }>()
+);
+
+export const getAuthorsSuccess = createAction(
+  '[COURSES] Get Authors Success',
+  props<{ authors: Author[] }>()
+);
+
+export const getAuthorsFailure = createAction(
+  '[COURSES] Get Authors Failure',
+  props<{ error: Error }>()
+);

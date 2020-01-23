@@ -13,6 +13,10 @@ import { CoursePageComponent } from './components/course-page/course-page.compon
 import {LoginModule} from '../login/login.module';
 import {CoreModule} from '../core/core.module';
 import {RouterModule} from '@angular/router';
+import { AuthorInputComponent } from './components/author-input/author-input.component';
+import {TagInputModule} from 'ngx-chips';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import { TagsInputComponent } from './components/tags-input/tags-input.component';
 
 @NgModule({
   declarations: [
@@ -22,7 +26,10 @@ import {RouterModule} from '@angular/router';
     NewCourseComponent,
     DateInputComponent,
     DurationInputComponent,
-    CoursePageComponent
+    CoursePageComponent,
+    AuthorInputComponent,
+    TagsInputComponent
+
   ],
   imports: [
     CommonModule,
@@ -32,7 +39,9 @@ import {RouterModule} from '@angular/router';
     LoginModule,
     CoreModule,
     RouterModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    TagInputModule,
+    BrowserAnimationsModule
   ],
   exports: [
     CoursePageComponent
