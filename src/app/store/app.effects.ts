@@ -33,6 +33,8 @@ export class AppEffects {
         (input) => this.authorizationService.getUserInfo(input.authorization)
           .pipe(
             map((data) => {
+              window.localStorage.setItem('authorization', JSON.stringify(input.authorization));
+              window.localStorage.setItem('user', JSON.stringify(data));
               this.router.navigate(['courses']);
               return AppActions.getUserSuccess({user: data});
             }),

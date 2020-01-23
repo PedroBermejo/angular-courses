@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { SearchComponent } from './components/search/search.component';
 import { AddComponent } from './components/add/add.component';
 import { CourseItemComponent } from './components/course-item/course-item.component';
-import {FormsModule} from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {DirectivesModule} from '../directives/directives.module';
 import {PipesModule} from '../pipes/pipes.module';
 import { NewCourseComponent } from './components/new-course/new-course.component';
@@ -31,7 +31,8 @@ import {RouterModule} from '@angular/router';
     PipesModule,
     LoginModule,
     CoreModule,
-    RouterModule
+    RouterModule,
+    ReactiveFormsModule
   ],
   exports: [
     CoursePageComponent

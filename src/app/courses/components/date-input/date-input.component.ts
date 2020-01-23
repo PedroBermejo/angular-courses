@@ -1,24 +1,30 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {Course} from '../../../interfaces/course';
+import {Component} from '@angular/core';
+import {ControlValueAccessor, NG_VALUE_ACCESSOR} from '@angular/forms';
 
 @Component({
   selector: 'app-date-input',
   templateUrl: './date-input.component.html',
-  styleUrls: ['./date-input.component.css']
+  styleUrls: ['./date-input.component.css'],
+  providers: [{
+    provide: NG_VALUE_ACCESSOR,
+    useExisting: DateInputComponent,
+    multi: true
+  }]
 })
-export class DateInputComponent implements OnInit {
-  @Output() dateChanged = new EventEmitter();
-  @Input() date: string;
+export class DateInputComponent implements ControlValueAccessor {
+  value: string;
+  onChange: () => void;
+  onTouched: () => void;
 
-  constructor() { }
-
-  ngOnInit() {
+  registerOnChange(fn: any): void {
+    this.onChange = fn;
   }
 
-  inputChanged() {
-    this.dateChanged.next(this.date);
+  registerOnTouched(fn: any): void {
+    this.onTouched = fn;
   }
 
-
-
+  writeValue(value: string): void {
+    this.value = value;
+  }
 }

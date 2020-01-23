@@ -12,19 +12,35 @@ import {Observable} from 'rxjs';
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.css']
 })
-export class HeaderComponent {
+export class HeaderComponent implements OnInit {
 
-  userInfo$: Observable<UserEntity> = this.store.select(store => store.courses.user);
+  userInfo: UserEntity;
+
 
   constructor(
     private router: Router,
     private authorizationService: AuthorizationService,
     private store: Store<AppState>
-  ) { }
+  ) {
+    this.store.select(storeData => storeData.courses.user).subscribe(
+      data => {
+        if (data) {
+          this.userInfo = data;
+        }
+      }
+    );
+  }
+
+  ngOnInit() {
+    this.userInfo = JSON.parse(window.localStorage.getItem('user'));
+  }
 
   logOff() {
-    this.store.dispatch(AppActions.getUser({ authorization: undefined }));
+    window.localStorage.removeItem('authorization');
+    window.localStorage.removeItem('user');
+    this.userInfo = undefined;
     this.store.dispatch(AppActions.logIn({ login: undefined }));
+    this.store.dispatch(AppActions.getUser({ authorization: undefined }));
     this.router.navigate(['login'], {});
   }
 
