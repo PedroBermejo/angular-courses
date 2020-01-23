@@ -22,13 +22,18 @@
       <br>
       <span>Date:</span>
       <span *ngIf="form.get('date').touched && form.get('date').hasError('required')"
-            class="required-input"> This field is required</span><br>
-      <app-date-input formControlName="date"></app-date-input><br>
+            class="required-input"> This field is required</span>
+      <span *ngIf="form.get('date').value && form.get('date').hasError('germanDate')"
+            class="required-input"> Date should be in format dd/MM/yyyy</span><br>
+      <app-date-input #dateChild formControlName="date"></app-date-input><br>
       <span>Duration:</span>
       <span *ngIf="form.get('length').touched && form.get('length').hasError('required')"
-            class="required-input"> This field is required</span><br>
-      <app-duration-input formControlName="length">
-      </app-duration-input><br>
+            class="required-input"> This field is required</span>
+      <span *ngIf="form.get('length').hasError('pattern')"
+            class="required-input"> Only numbers allowed</span><br>
+      <app-duration-input #lengthChild formControlName="length">
+      </app-duration-input>
+      <span class="duration">{{form.get('length').value | timeFormat}}</span><br>
       <input type="submit" class="submit" value="Save" [disabled]="!form.valid">
       <button (click)="cancelAdd()">Cancel</button>
     </form>

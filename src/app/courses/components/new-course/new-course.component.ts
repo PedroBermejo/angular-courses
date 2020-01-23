@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {AfterViewInit, Component, ElementRef, OnInit, ViewChild, ViewContainerRef} from '@angular/core';
 import {Author, Course} from '../../../interfaces/course';
 import {CoursesService} from '../../../services/courses.service';
 import {ActivatedRoute, Router} from '@angular/router';
@@ -7,18 +7,22 @@ import {Store} from '@ngrx/store';
 import {AppState} from '../../../store/app.state';
 import * as AppActions from '../../../store/app.actions';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import * as DateValidators from '../../../validators/date.validator';
+
 
 @Component({
   selector: 'app-new-course',
   templateUrl: './new-course.component.html',
   styleUrls: ['./new-course.component.css']
 })
-export class NewCourseComponent implements OnInit {
+export class NewCourseComponent implements OnInit, AfterViewInit {
   isNewCourse = false;
   form: FormGroup;
   id: number;
   isTopRated = false;
   authors: Author;
+  @ViewChild('dateChild', {read: ElementRef, static: false}) dateChild: ElementRef;
+  @ViewChild('lengthChild', {read: ElementRef, static: false}) lengthChild: ElementRef;
 
   constructor(
     private coursesServiceService: CoursesService,
@@ -30,8 +34,8 @@ export class NewCourseComponent implements OnInit {
   ) {
     this.form =  this.frb.group({
       name: [ '', Validators.compose([Validators.maxLength(50), Validators.required])],
-      date: [ '', Validators.required ],
-      length: [ 0, Validators.required ],
+      date: [ '', Validators.compose([DateValidators.germanDate, Validators.required]) ],
+      length: [ 0, Validators.compose([Validators.pattern('^[0-9]*$'), Validators.required]) ],
       description: [ '', Validators.compose([Validators.maxLength(500), Validators.required])]
     });
   }
@@ -66,6 +70,22 @@ export class NewCourseComponent implements OnInit {
     );
   }
 
+  ngAfterViewInit(): void {
+    this.form.get('date').statusChanges.subscribe(statusChange => {
+      if (statusChange === 'INVALID') {
+        this.dateChild.nativeElement.children[0].className = 'required-input-square';
+      } else {
+        this.dateChild.nativeElement.children[0].className = '';
+      }
+    });
+    this.form.get('length').statusChanges.subscribe(statusChange => {
+      if (statusChange === 'INVALID') {
+        this.lengthChild.nativeElement.children[0].className = 'required-input-square';
+      } else {
+        this.lengthChild.nativeElement.children[0].className = '';
+      }
+    });
+  }
 
   addCourse(form: FormGroup) {
     if (form.valid) {
