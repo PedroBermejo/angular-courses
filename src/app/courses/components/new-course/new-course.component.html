@@ -40,6 +40,8 @@
       <span class="duration">{{form.get('length').value | timeFormat}}</span><br>
 
       <span>Authors:</span>
+      <span *ngIf="form.get('authors').touched && form.get('authors').hasError('required')"
+            class="required-input"> This field is required</span><br>
       <app-author-input formControlName="authors"></app-author-input>
 
       <input type="submit" class="submit" value="Save" [disabled]="!form.valid">

@@ -1,1 +1,2 @@
-<app-tags-input [authors]="authors" (tagsChange)="onChange($event)"></app-tags-input>
+<app-tags-input [authors]="authors" (tagsChange)="onChange($event)"
+    (onBlur)="onTouched()"></app-tags-input>

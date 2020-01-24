@@ -15,7 +15,8 @@ export class TagsInputComponent implements AfterViewInit {
   public tags: Tag[] = [];
   initialTags: Tag[] = [];
   @Input() authors: Author[];
-  @Output() tagsChange: EventEmitter = new EventEmitter();
+  @Output() tagsChange = new EventEmitter();
+  @Output() onBlur = new EventEmitter();
 
 
   constructor(private store: Store<AppState>) {
@@ -38,13 +39,18 @@ export class TagsInputComponent implements AfterViewInit {
   }
 
   onTagRemove(event) {
-    this.authors = this.authors.filter(item => item.id !== event.id);
+    const id = this.authors.findIndex( item => item.id === event.value);
+    this.authors.splice(id, 1);
     this.tagsChange.next(this.authors);
   }
 
   onTagAdd(event) {
     const names = event.display.split(' ');
-    this.authors.push({id: event.id, name: names[0] , lastName: names[1]});
-    this.tagsChange.next(this.initialTags);
+    this.authors.push({id: event.value, name: names[0] , lastName: names[1]});
+    this.tagsChange.next(this.authors);
+  }
+
+  onInputBlur() {
+    this.onBlur.next();
   }
 }

@@ -4,6 +4,7 @@ import {Action, createReducer, on} from '@ngrx/store';
 
 const initialState: CourseState = {
   courses: [],
+  authors: [],
   loading: false,
   error: undefined,
   user: undefined,
