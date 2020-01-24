@@ -1,7 +1,9 @@
 <app-breadcrumbs></app-breadcrumbs>
 <div class="course-container" >
-  <app-search #inputChild></app-search>
-  <app-add></app-add>
+  <div>
+    <app-search class="search-bar" #inputChild></app-search>
+    <app-add class="add-button-bar"></app-add>
+  </div>
   <div class="course-items-container" *ngIf="courses$ | async; let courses;">
     <li *ngFor="let item of courses | sortBy: 'creationDate'">
       <app-course-item  [courseItem]="item" (deleteCourseItem)="delete($event)"></app-course-item>

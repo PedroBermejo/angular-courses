@@ -7,3 +7,13 @@ li {
   list-style-type: none;
   padding: 10px;
 }
+
+.search-bar {
+  margin-left: 50px;
+  display:inline-block;
+  margin-right: 20px;
+}
+
+.add-button-bar {
+  display:inline-block;
+}
