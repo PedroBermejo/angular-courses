@@ -1,11 +1,6 @@
 import { Component } from '@angular/core';
-import {Store} from '@ngrx/store';
-import {AppState} from '../../../store/app.state';
-import {Author, Tag} from '../../../interfaces/course';
-import * as AppActions from '../../../store/app.actions';
+import {Author} from '../../../interfaces/course';
 import {ControlValueAccessor, NG_VALUE_ACCESSOR} from '@angular/forms';
-import {TagModel} from 'ngx-chips/core/accessor';
-import {Observable, of} from 'rxjs';
 
 @Component({
   selector: 'app-author-input',
@@ -19,7 +14,7 @@ import {Observable, of} from 'rxjs';
 })
 export class AuthorInputComponent implements ControlValueAccessor {
   authors: Author[];
-  onChange: () => void;
+  onChange: (event) => void;
   onTouched: () => void;
 
   registerOnChange(fn: any): void {

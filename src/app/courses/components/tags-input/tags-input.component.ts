@@ -1,5 +1,4 @@
 import {AfterViewInit, Component, EventEmitter, Input, Output} from '@angular/core';
-import {ControlValueAccessor} from '@angular/forms';
 import {Author, Tag} from '../../../interfaces/course';
 import {Store} from '@ngrx/store';
 import {AppState} from '../../../store/app.state';

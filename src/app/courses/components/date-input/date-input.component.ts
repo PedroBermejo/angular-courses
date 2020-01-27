@@ -13,7 +13,7 @@ import {ControlValueAccessor, NG_VALUE_ACCESSOR} from '@angular/forms';
 })
 export class DateInputComponent implements ControlValueAccessor {
   value: string;
-  onChange: () => void;
+  onChange: (event) => void;
   onTouched: () => void;
 
   registerOnChange(fn: any): void {

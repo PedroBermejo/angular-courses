@@ -1,4 +1,4 @@
-<app-breadcrumbs [courseName]="title"></app-breadcrumbs>
+<app-breadcrumbs [courseName]="form.get('title')"></app-breadcrumbs>
 <main class="main-container">
   <div class="new-course-page">
     <form class="form" [formGroup]="form" (ngSubmit)="addCourse(form)">

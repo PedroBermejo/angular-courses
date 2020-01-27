@@ -13,7 +13,7 @@ import {ControlValueAccessor, NG_VALUE_ACCESSOR} from '@angular/forms';
 })
 export class DurationInputComponent implements ControlValueAccessor {
   value: number;
-  onChange: () => void;
+  onChange: (event) => void;
   onTouched: () => void;
 
   registerOnChange(fn: any): void {

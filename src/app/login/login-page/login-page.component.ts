@@ -4,7 +4,7 @@ import { AuthorizationService } from '../../services/authorization.service';
 import {Store} from '@ngrx/store';
 import {AppState} from '../../store/app.state';
 import * as AppActions from '../../store/app.actions';
-import {FormGroup} from '@angular/forms';
+import {NgForm} from '@angular/forms';
 
 @Component({
   selector: 'app-login-page',
@@ -20,7 +20,7 @@ export class LoginPageComponent {
     private store: Store<AppState>
   ) { }
 
-  logIn(form: FormGroup) {
+  logIn(form: NgForm) {
     if (form.valid) {
       const login: LoginInfo = {
         login: form.value.email,
