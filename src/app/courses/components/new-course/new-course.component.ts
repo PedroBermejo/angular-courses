@@ -1,5 +1,5 @@
-import {AfterViewInit, Component, ElementRef, OnInit, ViewChild, ViewContainerRef} from '@angular/core';
-import {Author, Course} from '../../../interfaces/course';
+import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import {Course} from '../../../interfaces/course';
 import {CoursesService} from '../../../services/courses.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {LoadingService} from '../../../services/loading.service';
@@ -15,7 +15,7 @@ import * as DateValidators from '../../../validators/date.validator';
   templateUrl: './new-course.component.html',
   styleUrls: ['./new-course.component.css']
 })
-export class NewCourseComponent implements OnInit, AfterViewInit {
+export class NewCourseComponent implements OnInit {
   isNewCourse = false;
   form: FormGroup;
   id: number;
@@ -70,23 +70,6 @@ export class NewCourseComponent implements OnInit, AfterViewInit {
     );
   }
 
-  ngAfterViewInit(): void {
-    this.form.get('date').statusChanges.subscribe(statusChange => {
-      if (statusChange === 'INVALID') {
-        this.dateChild.nativeElement.children[0].className = 'required-input-square';
-      } else {
-        this.dateChild.nativeElement.children[0].className = '';
-      }
-    });
-    this.form.get('length').statusChanges.subscribe(statusChange => {
-      if (statusChange === 'INVALID') {
-        this.lengthChild.nativeElement.children[0].className = 'required-input-square';
-      } else {
-        this.lengthChild.nativeElement.children[0].className = '';
-      }
-    });
-  }
-
   addCourse(form: FormGroup) {
     if (form.valid) {
       const formValue = this.form.value;
@@ -124,4 +107,25 @@ export class NewCourseComponent implements OnInit, AfterViewInit {
         }
     });
   }
+
+  getName() {
+    return this.form.get('name');
+  }
+
+  getDescription() {
+    return this.form.get('description');
+  }
+
+  getDate() {
+    return this.form.get('date');
+  }
+
+  getLength() {
+    return this.form.get('length');
+  }
+
+  getAuthors() {
+    return this.form.get('authors');
+  }
+
 }

@@ -1,4 +1,5 @@
 <input type="text" id="date" class="date"
        [value]="value" placeholder="Enter date"
-       (blur)="onTouched()" (input)="onChange($event.target.value)">
+       (blur)="onTouched()" (input)="onChange($event.target.value)"
+       [class.required-input-square]="errorSquare">
 

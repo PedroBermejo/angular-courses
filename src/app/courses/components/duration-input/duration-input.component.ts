@@ -1,5 +1,5 @@
-import {Component} from '@angular/core';
-import {ControlValueAccessor, NG_VALUE_ACCESSOR} from '@angular/forms';
+import {AfterViewInit, Component, Input} from '@angular/core';
+import {ControlValueAccessor, FormGroup, NG_VALUE_ACCESSOR} from '@angular/forms';
 
 @Component({
   selector: 'app-duration-input',
@@ -11,10 +11,22 @@ import {ControlValueAccessor, NG_VALUE_ACCESSOR} from '@angular/forms';
     multi: true
   }]
 })
-export class DurationInputComponent implements ControlValueAccessor {
+export class DurationInputComponent implements ControlValueAccessor, AfterViewInit {
   value: number;
   onChange: (event) => void;
   onTouched: () => void;
+  errorSquare = false;
+  @Input() form: FormGroup;
+
+  ngAfterViewInit(): void {
+    this.form.get('length').statusChanges.subscribe(statusChange => {
+      if (statusChange === 'INVALID') {
+        this.errorSquare = true;
+      } else {
+        this.errorSquare = false;
+      }
+    });
+  }
 
   registerOnChange(fn: any): void {
     this.onChange = fn;

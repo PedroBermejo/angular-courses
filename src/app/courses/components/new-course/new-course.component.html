@@ -4,43 +4,44 @@
     <form class="form" [formGroup]="form" (ngSubmit)="addCourse(form)">
 
       <span>Title:</span>
-      <span *ngIf="form.get('name').touched && form.get('name').hasError('required')"
+      <span *ngIf="getName().touched && getName().hasError('required')"
             class="required-input"> This field is required</span>
-      <span *ngIf="form.get('name').hasError('maxlength')" class="required-input">
+      <span *ngIf="getName().hasError('maxlength')" class="required-input">
          Max length is 50</span><br>
-      <input [class.required-input-square]="form.get('name').touched &&
-           form.get('name').hasError('required') || form.get('name').hasError('maxlength')"
+      <input [class.required-input-square]="getName().touched &&
+           getName().hasError('required') || getName().hasError('maxlength')"
            type="text" class="title" formControlName="name"  placeholder="Enter title">
       <br>
 
       <span>Description:</span>
-      <span *ngIf="form.get('description').touched && form.get('description').hasError('required')"
+      <span *ngIf="getDescription().touched && getDescription().hasError('required')"
             class="required-input"> This field is required</span>
-      <span *ngIf="form.get('description').hasError('maxlength')" class="required-input">
+      <span *ngIf="getDescription().hasError('maxlength')" class="required-input">
          Max length is 500</span><br>
-      <textarea [class.required-input-square]="form.get('description').touched &&
-           form.get('description').hasError('required') || form.get('description').hasError('maxlength')"
+      <textarea [class.required-input-square]="getDescription().touched &&
+           getDescription().hasError('required') || getDescription().hasError('maxlength')"
            rows="4" cols="50" formControlName="description" class="description"></textarea>
       <br>
 
       <span>Date:</span>
-      <span *ngIf="form.get('date').touched && form.get('date').hasError('required')"
+      <span *ngIf="getDate().touched && getDate().hasError('required')"
             class="required-input"> This field is required</span>
-      <span *ngIf="form.get('date').value && form.get('date').hasError('germanDate')"
+      <span *ngIf="getDate().value && getDate().hasError('germanDate')"
             class="required-input"> Date should be in format dd/MM/yyyy</span><br>
-      <app-date-input #dateChild formControlName="date"></app-date-input><br>
+      <app-date-input [form]="form" #dateChild formControlName="date">
+      </app-date-input><br>
 
       <span>Duration:</span>
-      <span *ngIf="form.get('length').touched && form.get('length').hasError('required')"
+      <span *ngIf="getLength().touched && getLength().hasError('required')"
             class="required-input"> This field is required</span>
-      <span *ngIf="form.get('length').hasError('pattern')"
+      <span *ngIf="getLength().hasError('pattern')"
             class="required-input"> Only numbers allowed</span><br>
-      <app-duration-input #lengthChild formControlName="length">
+      <app-duration-input [form]="form" #lengthChild formControlName="length">
       </app-duration-input>
-      <span class="duration">{{form.get('length').value | timeFormat}}</span><br>
+      <span class="duration">{{getLength().value | timeFormat}}</span><br>
 
       <span>Authors:</span>
-      <span *ngIf="form.get('authors').touched && form.get('authors').hasError('required')"
+      <span *ngIf="getAuthors().touched && getAuthors().hasError('required')"
             class="required-input"> This field is required</span><br>
       <app-author-input formControlName="authors"></app-author-input>
 

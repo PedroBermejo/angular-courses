@@ -1,2 +1,3 @@
 <input type="text" id="duration" [value]="value" placeholder="Enter duration"
-       (blur)="onTouched()" (input)="onChange($event.target.value)">
+       (blur)="onTouched()" (input)="onChange($event.target.value)"
+       [class.required-input-square]="errorSquare">
