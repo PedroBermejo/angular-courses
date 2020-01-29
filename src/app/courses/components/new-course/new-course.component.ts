@@ -1,4 +1,4 @@
-import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import {Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {Course} from '../../../interfaces/course';
 import {CoursesService} from '../../../services/courses.service';
 import {ActivatedRoute, Router} from '@angular/router';
@@ -9,6 +9,8 @@ import * as AppActions from '../../../store/app.actions';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import * as DateValidators from '../../../validators/date.validator';
 import * as moment from 'moment';
+import {take, takeUntil} from 'rxjs/operators';
+import {Subject} from 'rxjs';
 
 
 @Component({
@@ -16,11 +18,12 @@ import * as moment from 'moment';
   templateUrl: './new-course.component.html',
   styleUrls: ['./new-course.component.css']
 })
-export class NewCourseComponent implements OnInit {
+export class NewCourseComponent implements OnInit, OnDestroy {
   isNewCourse = false;
   form: FormGroup;
   id: number;
   isTopRated = false;
+  unsubscribe$ = new Subject<void>();
 
   constructor(
     private coursesServiceService: CoursesService,
@@ -40,10 +43,10 @@ export class NewCourseComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.activeRoute.paramMap.subscribe(params => {
+    this.activeRoute.paramMap.pipe(take(1)).subscribe(params => {
       const id = +params.get('id');
       if (id) {
-        this.store.select( store => store.courses.courses).subscribe(
+        this.store.select( store => store.courses.courses).pipe(take(1)).subscribe(
           courses => {
             const course = courses.find( item => item.id === id);
             if (course) {
@@ -64,9 +67,14 @@ export class NewCourseComponent implements OnInit {
         this.generateId();
       }
     });
-    this.store.select(store => store.courses.loading).subscribe(
+    this.store.select(store => store.courses.loading).pipe(takeUntil(this.unsubscribe$)).subscribe(
       data => this.loadingService.togleLoading(data)
     );
+  }
+
+  ngOnDestroy() {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 
   addCourse(form: FormGroup) {
@@ -96,7 +104,7 @@ export class NewCourseComponent implements OnInit {
 
   generateId() {
     const id = Math.floor(Math.random() * 1000) + 1;
-    this.coursesServiceService.getItemById(id).subscribe(
+    this.coursesServiceService.getItemById(id).pipe(takeUntil(this.unsubscribe$)).subscribe(
       data => {
         this.generateId();
         }, error => {
