@@ -72,12 +72,10 @@ export class NewCourseComponent implements OnInit {
   addCourse(form: FormGroup) {
     if (form.valid) {
       const formValue = this.form.value;
-      const dateSplitted = formValue.date.split('/');
-      const newDate = new Date(+dateSplitted[2], +dateSplitted[1] - 1, +dateSplitted[0]);
       const course: Course = {
         id: +this.id,
         name: formValue.name,
-        date: newDate.toISOString(),
+        date: moment(formValue.date, 'DD/MM/YYYY').toISOString(),
         length: +formValue.length,
         description: formValue.description,
         isTopRated: this.isTopRated,
