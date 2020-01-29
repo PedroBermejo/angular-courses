@@ -20,8 +20,6 @@ export class NewCourseComponent implements OnInit {
   form: FormGroup;
   id: number;
   isTopRated = false;
-  @ViewChild('dateChild', {read: ElementRef, static: false}) dateChild: ElementRef;
-  @ViewChild('lengthChild', {read: ElementRef, static: false}) lengthChild: ElementRef;
 
   constructor(
     private coursesServiceService: CoursesService,
@@ -50,6 +48,12 @@ export class NewCourseComponent implements OnInit {
             if (course) {
               this.id = course.id;
               this.isTopRated = course.isTopRated;
+              // 'dd/MM/yyyy' -- Display format
+              // 2017-03-25T12:57:37+00:00  -- ISO format
+              if (course.date.length > 10) {
+                course.date =  course.date.substring(8, 10) + '/' +
+                  course.date.substring(5, 7) + '/' + course.date.substring(0, 4);
+              }
               this.form.patchValue({
                 name: course.name,
                 date: course.date,
@@ -73,7 +77,6 @@ export class NewCourseComponent implements OnInit {
   addCourse(form: FormGroup) {
     if (form.valid) {
       const formValue = this.form.value;
-      console.log(formValue.authors);
       const course: Course = {
         id: +this.id,
         name: formValue.name,
@@ -108,23 +111,23 @@ export class NewCourseComponent implements OnInit {
     });
   }
 
-  getName() {
+  get name() {
     return this.form.get('name');
   }
 
-  getDescription() {
+  get description() {
     return this.form.get('description');
   }
 
-  getDate() {
+  get date() {
     return this.form.get('date');
   }
 
-  getLength() {
+  get length() {
     return this.form.get('length');
   }
 
-  getAuthors() {
+  get authors() {
     return this.form.get('authors');
   }
 

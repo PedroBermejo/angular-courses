@@ -29,4 +29,14 @@ export class CourseItemComponent implements OnInit {
     this.router.navigate(['courses', this.courseItem.id], {});
   }
 
+  // 'dd/MM/yyyy' -- Display format
+  // 2017-03-25T12:57:37+00:00  -- ISO format
+  get itemDate() {
+    const date = this.courseItem.date;
+    if (date.length === 10) {
+      return date.substring(6, 10) + '-' + date.substring(3, 5) +
+        '-' + date.substring(0, 2) + 'T12:57:37+00:00';
+    }
+    return date;
+  }
 }
