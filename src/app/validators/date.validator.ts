@@ -1,6 +1,12 @@
 import {AbstractControl} from '@angular/forms';
+import * as moment from 'moment';
 
 export function germanDate(control: AbstractControl) {
   const dateRegEx = new RegExp(/^\d{1,2}\/\d{1,2}\/\d{4}$/);
-  return dateRegEx.test(control.value) ? null : {germanDate: true};
+  if (dateRegEx.test(control.value)) {
+    return moment(control.value, 'dd/MM/yyyy').isValid() ? null : {germanDate: true};
+  } else {
+    return  {germanDate: true} ;
+  }
+
 }

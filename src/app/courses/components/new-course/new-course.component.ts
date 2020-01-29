@@ -8,6 +8,7 @@ import {AppState} from '../../../store/app.state';
 import * as AppActions from '../../../store/app.actions';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import * as DateValidators from '../../../validators/date.validator';
+import * as moment from 'moment';
 
 
 @Component({
@@ -31,7 +32,7 @@ export class NewCourseComponent implements OnInit {
   ) {
     this.form =  this.frb.group({
       name: [ '', Validators.compose([Validators.maxLength(50), Validators.required])],
-      date: [ '', Validators.compose([DateValidators.germanDate, Validators.required]) ],
+      date: [ Date, Validators.compose([DateValidators.germanDate, Validators.required]) ],
       length: [ 0, Validators.compose([Validators.pattern('^[0-9]*$'), Validators.required]) ],
       description: [ '', Validators.compose([Validators.maxLength(500), Validators.required])],
       authors: [ [], Validators.compose( [Validators.required])]
@@ -48,15 +49,9 @@ export class NewCourseComponent implements OnInit {
             if (course) {
               this.id = course.id;
               this.isTopRated = course.isTopRated;
-              // 'dd/MM/yyyy' -- Display format
-              // 2017-03-25T12:57:37+00:00  -- ISO format
-              if (course.date.length > 10) {
-                course.date =  course.date.substring(8, 10) + '/' +
-                  course.date.substring(5, 7) + '/' + course.date.substring(0, 4);
-              }
               this.form.patchValue({
                 name: course.name,
-                date: course.date,
+                date: moment(course.date).format('DD/MM/YYYY').toString(),
                 length: course.length,
                 description: course.description,
                 authors: course.authors
@@ -77,10 +72,12 @@ export class NewCourseComponent implements OnInit {
   addCourse(form: FormGroup) {
     if (form.valid) {
       const formValue = this.form.value;
+      const dateSplitted = formValue.date.split('/');
+      const newDate = new Date(+dateSplitted[2], +dateSplitted[1] - 1, +dateSplitted[0]);
       const course: Course = {
         id: +this.id,
         name: formValue.name,
-        date: formValue.date,
+        date: newDate.toISOString(),
         length: +formValue.length,
         description: formValue.description,
         isTopRated: this.isTopRated,
