@@ -21,3 +21,10 @@ button {
   margin-right: 10px;
 }
 
+.required-input {
+  color: red;
+}
+
+.required-input-square {
+  border-color: red;
+}

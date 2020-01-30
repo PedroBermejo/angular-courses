@@ -1,21 +1,53 @@
-<app-breadcrumbs [courseName]="title"></app-breadcrumbs>
+<app-breadcrumbs [courseName]="form.get('title')"></app-breadcrumbs>
 <main class="main-container">
   <div class="new-course-page">
-    <div class="form">
-      <span>Title:</span><br>
-      <input type="text" class="title" [(ngModel)]="title"  placeholder="Enter title">
+    <form class="form" [formGroup]="form" (ngSubmit)="addCourse(form)">
+
+      <span>Title:</span>
+      <span *ngIf="name.touched && name.hasError('required')"
+            class="required-input"> This field is required</span>
+      <span *ngIf="name.hasError('maxlength')" class="required-input">
+         Max length is 50</span><br>
+      <input [class.required-input-square]="name.touched &&
+           name.hasError('required') || name.hasError('maxlength')"
+           type="text" class="title" formControlName="name"  placeholder="Enter title">
       <br>
-      <span>Description:</span><br>
-      <textarea rows="4" cols="50" [(ngModel)]="description" class="description"></textarea>
+
+      <span>Description:</span>
+      <span *ngIf="description.touched && description.hasError('required')"
+            class="required-input"> This field is required</span>
+      <span *ngIf="description.hasError('maxlength')" class="required-input">
+         Max length is 500</span><br>
+      <textarea [class.required-input-square]="description.touched &&
+           description.hasError('required') || description.hasError('maxlength')"
+           rows="4" cols="50" formControlName="description" class="description"></textarea>
       <br>
-      <span>Date:</span><br>
-      <app-date-input [date]="date" (dateChanged)="updateDate($event)"></app-date-input><br>
-      <span>Duration:</span><br>
-      <app-duration-input
-          [duration]="duration" (durationChanged)="updateDuration($event)">
-      </app-duration-input><br>
-      <button class="submit" (click)="addCourse()">Save</button>
+
+      <span>Date:</span>
+      <span *ngIf="date.touched && date.hasError('required')"
+            class="required-input"> This field is required</span>
+      <span *ngIf="date.value && date.hasError('germanDate')"
+            class="required-input"> Date should be in format dd/MM/yyyy</span><br>
+      <app-date-input [form]="form" formControlName="date">
+      </app-date-input><br>
+
+      <span>Duration:</span>
+      <span *ngIf="length.touched && length.hasError('required')"
+            class="required-input"> This field is required</span>
+      <span *ngIf="length.hasError('pattern')"
+            class="required-input"> Only numbers allowed</span><br>
+      <app-duration-input [form]="form" formControlName="length">
+      </app-duration-input>
+      <span class="duration">{{length.value | timeFormat}}</span><br>
+
+      <span>Authors:</span>
+      <span *ngIf="authors.touched && authors.hasError('required')"
+            class="required-input"> This field is required</span><br>
+      <app-author-input formControlName="authors"></app-author-input>
+
+      <input type="submit" class="submit" value="Save" [disabled]="!form.valid">
       <button (click)="cancelAdd()">Cancel</button>
-    </div>
+
+    </form>
   </div>
 </main>

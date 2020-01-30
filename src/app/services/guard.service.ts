@@ -26,8 +26,14 @@ export class GuardService implements  CanActivate {
   }
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean | UrlTree> {
+    let authorizationValue;
+    if (this.authorization) {
+      authorizationValue = this.authorization;
+    } else {
+      authorizationValue = JSON.parse(window.localStorage.getItem('authorization'));
+    }
     const urlTree = this.router.parseUrl('/login');
-    return this.authorizationService.getUserInfo(this.authorization).pipe(
+    return this.authorizationService.getUserInfo(authorizationValue).pipe(
       map(response => !!response),
       catchError(error => of(urlTree))
     );

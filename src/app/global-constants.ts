@@ -3,7 +3,8 @@ export const globalConstants = {
     domain: 'http://localhost:3004',
     courses: 'courses',
     authorizationLogin: 'auth/login',
-    userInfo: 'auth/userinfo'
+    userInfo: 'auth/userinfo',
+    authors: 'authors'
   },
   queryParams: {
     start: 'start',

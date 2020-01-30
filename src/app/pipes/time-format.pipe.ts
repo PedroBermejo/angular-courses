@@ -7,8 +7,8 @@ import * as moment from 'moment';
 })
 export class TimeFormatPipe implements PipeTransform {
 
-  transform(valueInMinutes: number): string {
-      return moment.utc(moment.duration(valueInMinutes, 'minutes').asMilliseconds()).format('H[h] mm[min]');
+  transform(valueInMinutes: string): string {
+    return moment.utc(moment.duration(+valueInMinutes, 'minutes').asMilliseconds()).format('H[h] mm[min]');
   }
 
 

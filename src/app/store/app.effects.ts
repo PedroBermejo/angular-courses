@@ -33,6 +33,8 @@ export class AppEffects {
         (input) => this.authorizationService.getUserInfo(input.authorization)
           .pipe(
             map((data) => {
+              window.localStorage.setItem('authorization', JSON.stringify(input.authorization));
+              window.localStorage.setItem('user', JSON.stringify(data));
               this.router.navigate(['courses']);
               return AppActions.getUserSuccess({user: data});
             }),
@@ -127,6 +129,21 @@ export class AppEffects {
               return AppActions.addCourseSuccess({});
             }),
             catchError(error => of(AppActions.addCourseFailure({error})))
+          )
+      ),
+    )
+  );
+
+  getAuthors$ = createEffect(
+    () => this.actions$.pipe(
+      ofType(AppActions.getAuthors),
+      mergeMap(
+        () => this.coursesService.retrieveAuthors()
+          .pipe(
+            map((authors) => {
+              return AppActions.getAuthorsSuccess({authors});
+            }),
+            catchError(error => of(AppActions.getAuthorsFailure({error})))
           )
       ),
     )

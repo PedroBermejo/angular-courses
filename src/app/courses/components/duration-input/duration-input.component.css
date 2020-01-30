@@ -1,3 +1,6 @@
 .duration {
   padding-left: 20px;
 }
+.required-input-square {
+  border-color: red;
+}

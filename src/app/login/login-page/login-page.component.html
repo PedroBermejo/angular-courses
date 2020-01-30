@@ -10,9 +10,10 @@
       <input type="text" id="email" class="login" name="email" placeholder="Enter e-mail" ngModel required>
       <br>
       <span>Password:</span> <span>*required</span><br>
-      <input type="text" id="password" class="password" name="password" placeholder="Enter password" ngModel required>
+      <input type="password" id="password" class="password" name="password" placeholder="Enter password" ngModel required>
       <br>
-      <input type="submit" class="submit" value="Log In"><br>
+      <span class="error-message" *ngIf="loginError$ | async">User or password is incorrect</span><br>
+      <input type="submit" class="submit" value="Log In" [disabled]="!myform.valid"><br>
     </form>
 
     <div id="formFooter">

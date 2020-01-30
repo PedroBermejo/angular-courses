@@ -1,4 +1,4 @@
-import {Component, Input, OnInit, Output, EventEmitter, ChangeDetectionStrategy} from '@angular/core';
+import {Component, Input, Output, EventEmitter, ChangeDetectionStrategy} from '@angular/core';
 import {Course} from '../../../interfaces/course';
 import {Router} from '@angular/router';
 
@@ -8,15 +8,12 @@ import {Router} from '@angular/router';
   styleUrls: ['./course-item.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class CourseItemComponent implements OnInit {
+export class CourseItemComponent {
 
   @Input() courseItem: Course;
   @Output() deleteCourseItem = new EventEmitter();
 
   constructor(private router: Router) { }
-
-  ngOnInit() {
-  }
 
   openDeleteModal() {
     const deleteItem = confirm('Do you really want to delete this course? Yes/No');
@@ -28,5 +25,4 @@ export class CourseItemComponent implements OnInit {
   openEditModal() {
     this.router.navigate(['courses', this.courseItem.id], {});
   }
-
 }

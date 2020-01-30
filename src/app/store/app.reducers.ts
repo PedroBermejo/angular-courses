@@ -4,6 +4,7 @@ import {Action, createReducer, on} from '@ngrx/store';
 
 const initialState: CourseState = {
   courses: [],
+  authors: [],
   loading: false,
   error: undefined,
   user: undefined,
@@ -101,6 +102,20 @@ export const coursesReducer = createReducer(
     loading: false
   })),
   on(AppActions.addCourseFailure, (state, {error}) => ({
+    ...state,
+    error,
+    loading: false
+  })),
+  on(AppActions.getAuthors, (state) => ({
+    ...state,
+    loading: true
+  })),
+  on(AppActions.getAuthorsSuccess, (state, {authors}) => ({
+    ...state,
+    authors,
+    loading: false
+  })),
+  on(AppActions.getAuthorsFailure, (state, {error}) => ({
     ...state,
     error,
     loading: false

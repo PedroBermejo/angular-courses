@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { SearchComponent } from './components/search/search.component';
 import { AddComponent } from './components/add/add.component';
 import { CourseItemComponent } from './components/course-item/course-item.component';
-import {FormsModule} from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {DirectivesModule} from '../directives/directives.module';
 import {PipesModule} from '../pipes/pipes.module';
 import { NewCourseComponent } from './components/new-course/new-course.component';
@@ -13,6 +13,10 @@ import { CoursePageComponent } from './components/course-page/course-page.compon
 import {LoginModule} from '../login/login.module';
 import {CoreModule} from '../core/core.module';
 import {RouterModule} from '@angular/router';
+import { AuthorInputComponent } from './components/author-input/author-input.component';
+import {TagInputModule} from 'ngx-chips';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import { TagsInputComponent } from './components/tags-input/tags-input.component';
 
 @NgModule({
   declarations: [
@@ -22,7 +26,10 @@ import {RouterModule} from '@angular/router';
     NewCourseComponent,
     DateInputComponent,
     DurationInputComponent,
-    CoursePageComponent
+    CoursePageComponent,
+    AuthorInputComponent,
+    TagsInputComponent
+
   ],
   imports: [
     CommonModule,
@@ -31,7 +38,10 @@ import {RouterModule} from '@angular/router';
     PipesModule,
     LoginModule,
     CoreModule,
-    RouterModule
+    RouterModule,
+    ReactiveFormsModule,
+    TagInputModule,
+    BrowserAnimationsModule
   ],
   exports: [
     CoursePageComponent

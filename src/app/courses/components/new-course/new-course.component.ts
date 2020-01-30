@@ -1,52 +1,64 @@
-import {Component, OnInit} from '@angular/core';
-import {Author, Course} from '../../../interfaces/course';
+import {Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {Course} from '../../../interfaces/course';
 import {CoursesService} from '../../../services/courses.service';
 import {ActivatedRoute, Router} from '@angular/router';
-import {Observable} from 'rxjs';
 import {LoadingService} from '../../../services/loading.service';
 import {Store} from '@ngrx/store';
 import {AppState} from '../../../store/app.state';
 import * as AppActions from '../../../store/app.actions';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import * as DateValidators from '../../../validators/date.validator';
+import * as moment from 'moment';
+import {take, takeUntil} from 'rxjs/operators';
+import {Subject} from 'rxjs';
+
 
 @Component({
   selector: 'app-new-course',
   templateUrl: './new-course.component.html',
   styleUrls: ['./new-course.component.css']
 })
-export class NewCourseComponent implements OnInit {
-  id: number;
-  date: string;
-  duration: number;
-  title: string;
-  description: string;
-  topRated = false;
-  authors: Author;
-  courseItem$: Observable<Course>;
+export class NewCourseComponent implements OnInit, OnDestroy {
   isNewCourse = false;
+  form: FormGroup;
+  id: number;
+  isTopRated = false;
+  unsubscribe$ = new Subject<void>();
 
   constructor(
     private coursesServiceService: CoursesService,
     private activeRoute: ActivatedRoute,
     private router: Router,
     private loadingService: LoadingService,
-    private store: Store<AppState>
-  ) { }
+    private store: Store<AppState>,
+    private frb: FormBuilder
+  ) {
+    this.form =  this.frb.group({
+      name: [ '', Validators.compose([Validators.maxLength(50), Validators.required])],
+      date: [ Date, Validators.compose([DateValidators.germanDate, Validators.required]) ],
+      length: [ 0, Validators.compose([Validators.pattern('^[0-9]*$'), Validators.required]) ],
+      description: [ '', Validators.compose([Validators.maxLength(500), Validators.required])],
+      authors: [ [], Validators.compose( [Validators.required])]
+    });
+  }
 
   ngOnInit() {
-    this.activeRoute.paramMap.subscribe(params => {
+    this.activeRoute.paramMap.pipe(take(1)).subscribe(params => {
       const id = +params.get('id');
       if (id) {
-        this.store.select( store => store.courses.courses).subscribe(
+        this.store.select( store => store.courses.courses).pipe(take(1)).subscribe(
           courses => {
             const course = courses.find( item => item.id === id);
             if (course) {
               this.id = course.id;
-              this.date = course.date;
-              this.duration = course.length;
-              this.title = course.name;
-              this.description = course.description;
-              this.topRated = course.isTopRated;
-              this.authors = course.authors;
+              this.isTopRated = course.isTopRated;
+              this.form.patchValue({
+                name: course.name,
+                date: moment(course.date).format('DD/MM/YYYY').toString(),
+                length: course.length,
+                description: course.description,
+                authors: course.authors
+              });
             }
           }
         );
@@ -55,23 +67,28 @@ export class NewCourseComponent implements OnInit {
         this.generateId();
       }
     });
-    this.store.select(store => store.courses.loading).subscribe(
+    this.store.select(store => store.courses.loading).pipe(takeUntil(this.unsubscribe$)).subscribe(
       data => this.loadingService.togleLoading(data)
     );
   }
 
+  ngOnDestroy() {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
+  }
 
-  addCourse() {
-    if (this.title && this.description && this.duration && this.date) {
+  addCourse(form: FormGroup) {
+    if (form.valid) {
+      const formValue = this.form.value;
       const course: Course = {
-        id: this.id,
-        name: this.title,
-        date: this.date,
-        length: +this.duration,
-        description: this.description,
-        isTopRated: this.topRated,
-        authors: this.authors
-      };
+        id: +this.id,
+        name: formValue.name,
+        date: moment(formValue.date, 'DD/MM/YYYY').toISOString(),
+        length: +formValue.length,
+        description: formValue.description,
+        isTopRated: this.isTopRated,
+        authors: formValue.authors
+      }
       if (this.isNewCourse) {
         this.store.dispatch(AppActions.addCourse({course: course}));
       } else {
@@ -85,17 +102,9 @@ export class NewCourseComponent implements OnInit {
     this.router.navigate(['courses']);
   }
 
-  updateDate(event) {
-    this.date = event;
-  }
-
-  updateDuration(event) {
-    this.duration = event;
-  }
-
   generateId() {
     const id = Math.floor(Math.random() * 1000) + 1;
-    this.coursesServiceService.getItemById(id).subscribe(
+    this.coursesServiceService.getItemById(id).pipe(takeUntil(this.unsubscribe$)).subscribe(
       data => {
         this.generateId();
         }, error => {
@@ -104,4 +113,25 @@ export class NewCourseComponent implements OnInit {
         }
     });
   }
+
+  get name() {
+    return this.form.get('name');
+  }
+
+  get description() {
+    return this.form.get('description');
+  }
+
+  get date() {
+    return this.form.get('date');
+  }
+
+  get length() {
+    return this.form.get('length');
+  }
+
+  get authors() {
+    return this.form.get('authors');
+  }
+
 }

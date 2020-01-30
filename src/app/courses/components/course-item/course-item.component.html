@@ -4,11 +4,13 @@
 
   <div class="header row">
     <div class="title col-md-8">
-      <h3>{{courseItem.name | uppercase}}</h3>
+      <h3>{{courseItem.name | uppercase}}
+        <span class="top-rated-star" *ngIf="courseItem.isTopRated">⭐</span>
+      </h3>
     </div>
     <div class="time col-md-4">
-      <span class="duration">{{courseItem.length | timeFormat}}</span>
-      <span class="creation-date">{{courseItem.date | date}}</span>
+      <span class="duration">{{courseItem.length.toString() | timeFormat}}</span>
+      <span class="creation-date">{{courseItem.date | date: 'dd/MM/yyyy'}}</span>
     </div>
   </div>
 
